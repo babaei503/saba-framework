@@ -16,6 +16,7 @@ Backend:
  3. Update application.properties set your Mysql username and password.
  4. Run as spring boot app.
  5. Default address is http://localhost:8080.
+
 Fronend:
  1. Install Node.js.
  2. Clone frontend repo.
