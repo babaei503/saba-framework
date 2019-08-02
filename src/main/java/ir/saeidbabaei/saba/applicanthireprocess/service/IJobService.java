@@ -13,5 +13,9 @@ public interface IJobService {
   public void deleteById(Long id);
   
   public Optional<Job> findById(Long id);
+
+  public List<Job> findByLocationAndOpen(String location, boolean open);
+
+  public List<Job> findByOpen(boolean open, int page, int itemcount);
   
 }

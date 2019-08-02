@@ -100,6 +100,18 @@ public class ApplicantHireProcessController {
 		  return ResponseEntity.ok(jobservice.findAll());
 	}
 	
+	@RequestMapping(value = "/get-open-job-list-by-location/{location}", method = RequestMethod.GET)
+	public ResponseEntity<List<Job>> getopenjoblistbylocation(@PathVariable String location) {
+	      
+		  return ResponseEntity.ok(jobservice.findByLocationAndOpen(location,true));
+	}
+	
+	@RequestMapping(value = "/get-open-job-list-with-paging/{page}/{itemcount}", method = RequestMethod.GET)
+	public ResponseEntity<List<Job>> getopenjoblistwithpaging(@PathVariable int page, @PathVariable int itemcount) {
+	      
+		  return ResponseEntity.ok(jobservice.findByOpen(true,page,itemcount));
+	}
+	
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/complete-phoneinterview-task/{id}")
     public String completephoneinterviewtaskbytaskid(@PathVariable String id) {

@@ -61,6 +61,9 @@ public class Job  {
     @NotNull
 	private String description;
     
+    @NotNull
+    private boolean open;
+    
     @CreatedBy
     User creator;
      
@@ -151,6 +154,14 @@ public class Job  {
 
 	public void setIndustry(String industry) {
 		this.industry = industry;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
 
 }

@@ -1,13 +1,23 @@
 # saba-framework
+
 mysql
+
 hibernate
+
 spring boot
+
 restfull API 
+
 activiti 
+
 springbootsecurity
+
 custom exception handling
+
 node.js
+
 angular7 
+
 jwtauthentication
 
 Backend:
