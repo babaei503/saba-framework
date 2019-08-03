@@ -1,4 +1,4 @@
-package ir.saeidbabaei.saba;
+package ir.saeidbabaei.saba.applicanthireprocess.entity;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant;
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
@@ -14,6 +15,7 @@ import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @DataJpaTest
 public class ApplicantTest {
 
@@ -23,7 +25,8 @@ public class ApplicantTest {
     @Before
     public void setUp() {
 
-        List<Applicant> list = entityManager.getEntityManager().createQuery("from Applicant").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Applicant> list = entityManager.getEntityManager().createQuery("from Applicant").getResultList();
 
         for(Applicant applicant:list) {
             entityManager.remove(applicant);
@@ -41,9 +44,10 @@ public class ApplicantTest {
         j1.setTitle("title1");     
         j1.setCompany("company1");
         j1.setLocation("location1");
-        j1.setIndustry("industry1");
+        j1.setEmployment("employment1");
         j1.setJobfunction("jobfunction1");
-        j1.getDescription("description1")      
+        j1.setIndustry("industry1");
+        j1.setDescription("description1");      
         entityManager.persist(j1);
         
         Applicant a1 = new Applicant();
@@ -55,7 +59,8 @@ public class ApplicantTest {
 
         entityManager.persist(a1);
 
-        List<Applicant> list = entityManager.getEntityManager().createQuery("from Applicant").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Applicant> list = entityManager.getEntityManager().createQuery("from Applicant").getResultList();
 
         Assert.assertEquals(1L, list.size());
 

@@ -76,12 +76,23 @@ public class Job  {
     @LastModifiedDate
     Date modifiedAt;
 
-	public Job() {
-	}
-
-	public Job(@Size(min = 3, max = 45) @NotNull String code, @Size(min = 3, max = 45) @NotNull String title) {
+    public Job() {};
+    		
+	public Job(@Size(min = 3, max = 45) @NotNull String code, @Size(min = 3, max = 45) @NotNull String title,
+			@Size(min = 3, max = 45) @NotNull String company, @Size(min = 3, max = 45) @NotNull String location,
+			@Size(min = 3, max = 45) @NotNull String employment, @Size(min = 3, max = 45) @NotNull String jobfunction,
+			@Size(min = 3, max = 45) @NotNull String industry, @Size(min = 3, max = 4000) @NotNull String description,
+			@NotNull boolean open) {
+		super();
 		this.code = code;
 		this.title = title;
+		this.company = company;
+		this.location = location;
+		this.employment = employment;
+		this.jobfunction = jobfunction;
+		this.industry = industry;
+		this.description = description;
+		this.open = open;
 	}
     
 	public long getId() {

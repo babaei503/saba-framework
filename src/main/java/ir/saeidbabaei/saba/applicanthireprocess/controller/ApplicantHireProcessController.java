@@ -88,6 +88,11 @@ public class ApplicantHireProcessController {
 	@DeleteMapping("/applicant/delete/{id}")
 	public ResponseEntity<Applicant> deleteApplicant(@PathVariable long id) {
 		
+		Optional<Applicant> applicantOptional = applicantservice.findById(id);
+		
+		if (!applicantOptional.isPresent())
+			throw new EntityNotFoundException("Applicant");
+		
 		applicantservice.deleteById(id);
 		
 		return ResponseEntity.accepted().build();
