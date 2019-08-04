@@ -3,6 +3,7 @@ package ir.saeidbabaei.saba.applicanthireprocess.controller;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,13 @@ public class ApplicantHireProcessController {
     @Autowired
     private JobService jobservice;
 
+	//***************************
+	//***************************
+	//Applicant Rest API Section
+	//***************************
+	//***************************
+    
+    //Start applicant hire process after saving applicant 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/start-applicant-hire-process", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -50,6 +58,7 @@ public class ApplicantHireProcessController {
         return ResponseEntity.ok(applicant);
     }
        
+    //Get list of all applicant
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/get-applicant-list", method = RequestMethod.GET)
 	public ResponseEntity<List<Applicant>> getapplicantlist() {
@@ -57,6 +66,7 @@ public class ApplicantHireProcessController {
 		  return ResponseEntity.ok(applicantservice.findAll());
 	}
 	  
+	//Retrieve applicant by id
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/applicant/edit/{id}")
 	public ResponseEntity<Applicant> retrieveApplicant(@PathVariable long id) {
@@ -68,6 +78,7 @@ public class ApplicantHireProcessController {
 	        return ResponseEntity.ok(applicant.get());
 	}
 
+	//Update applicant by id
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/applicant/update/{id}")
 	public ResponseEntity<Applicant> updateApplicant(@RequestBody Applicant applicant, @PathVariable long id) {
@@ -84,6 +95,7 @@ public class ApplicantHireProcessController {
 		return ResponseEntity.ok(applicant);
 	}
 	
+	//Delete applicant by id
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/applicant/delete/{id}")
 	public ResponseEntity<Applicant> deleteApplicant(@PathVariable long id) {
@@ -99,24 +111,43 @@ public class ApplicantHireProcessController {
 		
 	}
 	
+	//*******************************
+	//*******************************
+	//Job Rest API Section
+	//*******************************
+	//*******************************
+	
+	//Get list of all job
 	@RequestMapping(value = "/get-job-list", method = RequestMethod.GET)
 	public ResponseEntity<List<Job>> getjoblist() {
 	      
 		  return ResponseEntity.ok(jobservice.findAll());
 	}
 	
-	@RequestMapping(value = "/get-open-job-list-by-location/{location}", method = RequestMethod.GET)
-	public ResponseEntity<List<Job>> getopenjoblistbylocation(@PathVariable String location) {
+	
+	//Get list of open job by location and title-- page number and count of item
+	@RequestMapping(value = "/get-open-job-list-by-location-title/{location}/{title}/{page}/{itemcount}", method = RequestMethod.GET)
+	public ResponseEntity<Page<Job>> getopenjoblistbylocationAndTitle1(@PathVariable String location,@PathVariable String title, @PathVariable int page, @PathVariable int itemcount) {
 	      
-		  return ResponseEntity.ok(jobservice.findByLocationAndOpen(location,true));
+		if (location.equals("all") && title.equals("all"))
+			 return ResponseEntity.ok(jobservice.findByOpen(true,page,itemcount));
+		else if (!location.equals("all") && !title.equals("all"))
+			 return ResponseEntity.ok(jobservice.findByLocationAndTitleAndOpen(location,title,true,page,itemcount));
+		else if (!location.equals("all") && title.equals("all"))
+			 return ResponseEntity.ok(jobservice.findByLocationAndOpen(location,true,page,itemcount));
+		else
+			 return ResponseEntity.ok(jobservice.findByTitleAndOpen(title,true,page,itemcount));
 	}
 	
-	@RequestMapping(value = "/get-open-job-list-with-paging/{page}/{itemcount}", method = RequestMethod.GET)
-	public ResponseEntity<List<Job>> getopenjoblistwithpaging(@PathVariable int page, @PathVariable int itemcount) {
-	      
-		  return ResponseEntity.ok(jobservice.findByOpen(true,page,itemcount));
-	}
 	
+	//*****************************************
+	//*****************************************
+	//Call Activiti Rest API for hiring tasks
+	//*****************************************
+	//*****************************************
+	
+	//Complete phone interview task by task id
+	//Send task variable (telephoneInterviewOutcome=true) to Activiti for complete task
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/complete-phoneinterview-task/{id}")
     public String completephoneinterviewtaskbytaskid(@PathVariable String id) {
@@ -130,6 +161,8 @@ public class ApplicantHireProcessController {
 		
 	}	
 	
+	//Complete tech interview task by taskid
+	//Send task variable (techOk=true) to Activiti for complete task
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/complete-techinterview-task/{id}")
     public String completetechinterviewtaskbytaskid(@PathVariable String id) {
@@ -142,6 +175,8 @@ public class ApplicantHireProcessController {
 	       		
 	}	
 	
+	//Complete financial task by taskid
+	//Send task variable (financialOk=true) to Activiti for complete task
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/complete-financialnegotiation-task/{id}")
     public String completefinancialnegotiationtaskbytaskid(@PathVariable String id) {

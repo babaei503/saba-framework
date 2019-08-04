@@ -31,7 +31,7 @@ import ir.saeidbabaei.saba.jwtauthentication.repository.RoleRepository;
 import ir.saeidbabaei.saba.jwtauthentication.repository.UserRepository;
 import ir.saeidbabaei.saba.jwtauthentication.security.jwt.JwtProvider;
 
-import org.activiti.engine.IdentityService;
+//import org.activiti.engine.IdentityService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -53,8 +53,8 @@ public class AuthRestAPIs {
 	@Autowired
 	JwtProvider jwtProvider;
 	
-    @Autowired 
-    private IdentityService identityService;
+//    @Autowired 
+//    private IdentityService identityService;
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
@@ -125,15 +125,15 @@ public class AuthRestAPIs {
 		user.setRoles(roles);
 		userRepository.save(user);
 		
-		//Insert Activiti user
-		org.activiti.engine.identity.User act_user = identityService.newUser(user.getUsername());
-		act_user.setPassword(user.getPassword());
-		act_user.setEmail(user.getEmail());
-        identityService.saveUser(act_user);
-        
-		strRoles.forEach(role -> {			         
-          identityService.createMembership(act_user.getId(), role);			
-		});
+//Insert Activiti user -- No need to add activiti user,group,membership since we use our users and roles
+//		org.activiti.engine.identity.User act_user = identityService.newUser(user.getUsername());
+//		act_user.setPassword(user.getPassword());
+//		act_user.setEmail(user.getEmail());
+//        identityService.saveUser(act_user);
+//        
+//		strRoles.forEach(role -> {			         
+//          identityService.createMembership(act_user.getId(), role);			
+//		});
 		
 
 		return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);

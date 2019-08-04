@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,17 +26,16 @@ public class JobService implements IJobService {
   }
   
   @Override
-  public List<Job> findByLocationAndOpen(String location, boolean open) {
-    List<Job> jobList = new ArrayList<>();
-    jobRepository.findByLocationAndOpen(location, open).forEach(jobList::add);
+  public Page<Job> findByLocationAndOpen(String location, boolean open, int page, int itemcount) {
+	Pageable PageWithitemcount = PageRequest.of(page, itemcount);
+	Page<Job> jobList = jobRepository.findByLocationAndOpen(location, open, PageWithitemcount);
     return jobList;
   }
   
   @Override
-  public List<Job> findByOpen(boolean open, int page, int itemcount) {
+  public Page<Job> findByOpen(boolean open, int page, int itemcount) {
 	 Pageable PageWithitemcount = PageRequest.of(page, itemcount);
-	 List<Job> jobList = new ArrayList<>();
-	 jobRepository.findByOpen(open,PageWithitemcount).forEach(jobList::add);
+	 Page<Job> jobList = jobRepository.findByOpen(open,PageWithitemcount);
 	 return jobList;
   }
   
@@ -53,6 +53,20 @@ public class JobService implements IJobService {
   @Override
   public  void deleteById(Long id){
 	jobRepository.deleteById(id);
+  }
+
+  @Override
+  public Page<Job> findByTitleAndOpen(String title, boolean open, int page, int itemcount) {
+		Pageable PageWithitemcount = PageRequest.of(page, itemcount);
+		Page<Job> jobList = jobRepository.findByTitleAndOpen(title, open, PageWithitemcount);
+	    return jobList;
+  }
+
+  @Override
+  public Page<Job> findByLocationAndTitleAndOpen(String location, String title, boolean open, int page, int itemcount) {
+		Pageable PageWithitemcount = PageRequest.of(page, itemcount);
+		Page<Job> jobList = jobRepository.findByLocationAndTitleAndOpen(location, title, open, PageWithitemcount);
+	    return jobList;
   }
 
 

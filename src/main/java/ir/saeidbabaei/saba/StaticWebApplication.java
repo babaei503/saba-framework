@@ -23,7 +23,7 @@ public class StaticWebApplication extends SpringBootServletInitializer {
         return application.sources(getClass());
     }
 
-
+//Insert Activiti user -- No need to add activiti user,group,membership since we use our users and roles
 //      @Bean
 //      InitializingBean usersAndGroupsInitializer(final IdentityService identityService) {
 //  

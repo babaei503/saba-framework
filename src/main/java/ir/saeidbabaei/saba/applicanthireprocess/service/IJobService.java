@@ -4,6 +4,8 @@ import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+
 public interface IJobService {
 	
   public List<Job> findAll();
@@ -14,8 +16,13 @@ public interface IJobService {
   
   public Optional<Job> findById(Long id);
 
-  public List<Job> findByLocationAndOpen(String location, boolean open);
+  public Page<Job> findByLocationAndOpen(String location, boolean open, int page, int itemcount);
 
-  public List<Job> findByOpen(boolean open, int page, int itemcount);
+  public Page<Job> findByOpen(boolean open, int page, int itemcount);
+
+  public Page<Job> findByTitleAndOpen(String title, boolean open, int page, int itemcount);
+
+  public Page<Job> findByLocationAndTitleAndOpen(String location, String title, boolean open, int page, int itemcount);
+  
   
 }
