@@ -1,14 +1,13 @@
 package ir.saeidbabaei.saba.applicanthireprocess.service;
 
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
 public interface IJobService {
 	
-  public List<Job> findAll();
+  public Page<Job> findAll(int page, int itemcount);
   
   public Job save(Job job);
 

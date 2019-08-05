@@ -1,6 +1,5 @@
 package ir.saeidbabaei.saba.applicanthireprocess.controller;
 
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,10 +8,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant;
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
 import ir.saeidbabaei.saba.applicanthireprocess.service.IApplicantService;
-import ir.saeidbabaei.saba.applicanthireprocess.service.JobService;
+import ir.saeidbabaei.saba.applicanthireprocess.service.IJobService;
+import ir.saeidbabaei.saba.bpms.BPMSProcessService;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +27,6 @@ import javax.persistence.EntityNotFoundException;
 @RestController
 @RequestMapping("/api")
 public class ApplicantHireProcessController {
-
-    @Autowired
-    private RuntimeService runtimeService;
     
     @Autowired
     private TaskService taskService;
@@ -36,7 +35,11 @@ public class ApplicantHireProcessController {
     private IApplicantService applicantservice;
     
     @Autowired
-    private JobService jobservice;
+    private IJobService jobservice;
+    
+    @Autowired
+    private BPMSProcessService bpmsprocessservice;
+    
 
 	//***************************
 	//***************************
@@ -44,17 +47,19 @@ public class ApplicantHireProcessController {
 	//***************************
 	//***************************
     
-    //Start applicant hire process after saving applicant 
+    //Saving applicant and start applicant hire process
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/start-applicant-hire-process", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Applicant> startApplicantHireProcess(@RequestBody Applicant applicant) {
-
+    	
+    	//Save applicant info
         applicantservice.save(applicant);
 
+        //Start hire process of applicant
         Map<String, Object> vars = Collections.<String, Object>singletonMap("applicant", applicant);
-        runtimeService.startProcessInstanceByKey("hireProcessWithJpa", vars);
-        
+        bpmsprocessservice.startprocessbyname(vars, "hireProcessWithJpa");
+	          
         return ResponseEntity.ok(applicant);
     }
        
@@ -118,16 +123,16 @@ public class ApplicantHireProcessController {
 	//*******************************
 	
 	//Get list of all job
-	@RequestMapping(value = "/get-job-list", method = RequestMethod.GET)
-	public ResponseEntity<List<Job>> getjoblist() {
+	@RequestMapping(value = "/get-job-list/{page}/{itemcount}", method = RequestMethod.GET)
+	public ResponseEntity<Page<Job>> getjoblist(@PathVariable int page, @PathVariable int itemcount) {
 	      
-		  return ResponseEntity.ok(jobservice.findAll());
+		  return ResponseEntity.ok(jobservice.findAll(page,itemcount));
 	}
 	
 	
 	//Get list of open job by location and title-- page number and count of item
 	@RequestMapping(value = "/get-open-job-list-by-location-title/{location}/{title}/{page}/{itemcount}", method = RequestMethod.GET)
-	public ResponseEntity<Page<Job>> getopenjoblistbylocationAndTitle1(@PathVariable String location,@PathVariable String title, @PathVariable int page, @PathVariable int itemcount) {
+	public ResponseEntity<Page<Job>> getopenjoblistbylocationAndTitle(@PathVariable String location,@PathVariable String title, @PathVariable int page, @PathVariable int itemcount) {
 	      
 		if (location.equals("all") && title.equals("all"))
 			 return ResponseEntity.ok(jobservice.findByOpen(true,page,itemcount));
@@ -139,15 +144,22 @@ public class ApplicantHireProcessController {
 			 return ResponseEntity.ok(jobservice.findByTitleAndOpen(title,true,page,itemcount));
 	}
 	
+	//Get job by id
+	@RequestMapping(value = "/get-job-by-id/{jobid}", method = RequestMethod.GET)
+	public ResponseEntity<Optional<Job>> getjobbyid(@PathVariable long jobid) {
+	      
+		  return ResponseEntity.ok(jobservice.findById(jobid));
+	}	
+	
 	
 	//*****************************************
 	//*****************************************
-	//Call Activiti Rest API for hiring tasks
+	//Call BPMS Rest API for hiring tasks
 	//*****************************************
 	//*****************************************
 	
 	//Complete phone interview task by task id
-	//Send task variable (telephoneInterviewOutcome=true) to Activiti for complete task
+	//Send task variable (telephoneInterviewOutcome=true) to BPMS for complete task
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/complete-phoneinterview-task/{id}")
     public String completephoneinterviewtaskbytaskid(@PathVariable String id) {
@@ -162,7 +174,7 @@ public class ApplicantHireProcessController {
 	}	
 	
 	//Complete tech interview task by taskid
-	//Send task variable (techOk=true) to Activiti for complete task
+	//Send task variable (techOk=true) to BPMS for complete task
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/complete-techinterview-task/{id}")
     public String completetechinterviewtaskbytaskid(@PathVariable String id) {
@@ -176,7 +188,7 @@ public class ApplicantHireProcessController {
 	}	
 	
 	//Complete financial task by taskid
-	//Send task variable (financialOk=true) to Activiti for complete task
+	//Send task variable (financialOk=true) to BPMS for complete task
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/complete-financialnegotiation-task/{id}")
     public String completefinancialnegotiationtaskbytaskid(@PathVariable String id) {

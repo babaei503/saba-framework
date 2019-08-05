@@ -1,7 +1,5 @@
 package ir.saeidbabaei.saba.applicanthireprocess.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,9 +17,9 @@ public class JobService implements IJobService {
   JobRepository jobRepository;
   
   @Override
-  public List<Job> findAll() {
-    List<Job> jobList = new ArrayList<>();
-    jobRepository.findAll().forEach(jobList::add);
+  public Page<Job> findAll( int page, int itemcount) {
+	Pageable PageWithitemcount = PageRequest.of(page, itemcount);
+	Page<Job> jobList = jobRepository.findAll(PageWithitemcount);
     return jobList;
   }
   

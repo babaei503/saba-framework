@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ir.saeidbabaei.saba.bpms.BPMSProcessService;
 import ir.saeidbabaei.saba.jwtauthentication.message.request.LoginForm;
 import ir.saeidbabaei.saba.jwtauthentication.message.request.SignUpForm;
 import ir.saeidbabaei.saba.jwtauthentication.message.response.JwtResponse;
@@ -31,7 +32,6 @@ import ir.saeidbabaei.saba.jwtauthentication.repository.RoleRepository;
 import ir.saeidbabaei.saba.jwtauthentication.repository.UserRepository;
 import ir.saeidbabaei.saba.jwtauthentication.security.jwt.JwtProvider;
 
-//import org.activiti.engine.IdentityService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -53,8 +53,13 @@ public class AuthRestAPIs {
 	@Autowired
 	JwtProvider jwtProvider;
 	
-//    @Autowired 
-//    private IdentityService identityService;
+    @Autowired
+    private BPMSProcessService bpmsprocessservice;
+       
+//    @Value("${server.port}")
+//    private static String serverport;
+//    
+//    private static String uri = "http://localhost:" + serverport;
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
@@ -70,6 +75,9 @@ public class AuthRestAPIs {
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
 	}
 
+    //***********In the next step use LDAP and Active Directory for both spring boot and BPMS users ***********
+	//Confirmation of user must be implemented in the next step!!!!
+	//All roles can register but must be approved by administrator. 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -125,15 +133,12 @@ public class AuthRestAPIs {
 		user.setRoles(roles);
 		userRepository.save(user);
 		
-//Insert Activiti user -- No need to add activiti user,group,membership since we use our users and roles
-//		org.activiti.engine.identity.User act_user = identityService.newUser(user.getUsername());
-//		act_user.setPassword(user.getPassword());
-//		act_user.setEmail(user.getEmail());
-//        identityService.saveUser(act_user);
-//        
-//		strRoles.forEach(role -> {			         
-//          identityService.createMembership(act_user.getId(), role);			
-//		});
+		//Insert BPMS user and membership
+		bpmsprocessservice.addbpmsuser(user);
+        
+		strRoles.forEach(role -> {				
+			bpmsprocessservice.addbpmsusertogroup(role, user.getUsername());
+		});
 		
 
 		return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);

@@ -1,4 +1,4 @@
-package ir.saeidbabaei.saba.activiti;
+package ir.saeidbabaei.saba.bpms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,11 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
-
-@RestController
-@RequestMapping("/activiti")
-public class ActivitiProcessController {
+//If you want to use a BPM System except activiti just update this service class
+@Service
+public class BPMSProcessService {
 
 	
     @Autowired
@@ -30,10 +28,8 @@ public class ActivitiProcessController {
     @Autowired 
     private IdentityService identityService;
 	
-    //************Add Activiti Groups	
-	@PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = "/add-activiti-group/{id}/{name}")
-    public Group addactivitigroup(@PathVariable String id, @PathVariable String name) throws Exception {
+    //************Add bpms Groups	
+    public Group addbpmsgroup(String id, String name) {
 		  
         Group group = identityService.newGroup(id);
         group.setName(name);
@@ -44,10 +40,8 @@ public class ActivitiProcessController {
 
     }
 	
-    //************Add Activiti Users	
-	@PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/add-activiti-user", method = RequestMethod.POST)
-    public User addactivitiuser(@RequestBody ir.saeidbabaei.saba.jwtauthentication.model.User user) throws Exception {
+    //************Add bpms Users	
+    public User addbpmsuser(ir.saeidbabaei.saba.jwtauthentication.model.User user){
 		  
 	    User actuser = identityService.newUser(user.getUsername());
 	    actuser.setPassword(user.getPassword());	    
@@ -57,10 +51,8 @@ public class ActivitiProcessController {
 
     }
     
-    //************Add Activiti User to Group	
-	@PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = "/add-activiti-user-to-group/{groupid}/{username}")
-    public User addactivitiusertogroup(@PathVariable String groupid, @PathVariable String username) throws Exception {
+    //************Add bpms User to Group	
+    public User addbpmsusertogroup(String groupid, String username){
 		  
         if (identityService.createGroupQuery().groupId(groupid).singleResult() != null) {
         	identityService.createMembership(username, groupid);
@@ -70,27 +62,22 @@ public class ActivitiProcessController {
 
     }
     
-    //************get Activiti Group	
-	@PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = "/get-activiti-group-by-id/{id}")
-    public Group getactivitigroupbyid(@PathVariable String groupid) throws Exception {
+    //************get bpms Group	
+    public Group getbpmsgroupbyid(String groupid) {
 		  
         return identityService.createGroupQuery().groupId(groupid).singleResult();
 
     }   
     
-    //************get Activiti user	
-	@PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = "/get-activiti-user-by-username/{id}")
-    public User getactivitiuserbyusername(@PathVariable String username) throws Exception {
+    //************get bpms user	
+    public User getbpmsuserbyusername(String username){
 		  
         return identityService.createUserQuery().userId(username).singleResult();
 
     }   
+ 
     
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/get-all-tasks-by-process-name/{name}")
-    public List<Task> getalltasks(@PathVariable String name) {
+    public List<Task> getalltasks(String name) {
 	
 		List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().processDefinitionKey(name).list();
 		
@@ -112,9 +99,8 @@ public class ActivitiProcessController {
 
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/get-active-tasks-by-process-name/{name}")
-    public List<Task> getactivetasks(@PathVariable String name) {
+
+    public List<Task> getactivetasks(String name) {
 	
 		List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().processDefinitionKey(name).active().list();
 		
@@ -136,9 +122,8 @@ public class ActivitiProcessController {
 
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/get-active-tasks-by-group/{name}")
-    public List<Task> getactivetasksbygroup(@PathVariable String name) {
+
+    public List<Task> getactivetasksbygroup(String name) {
 
        
         List<Task> tasks = taskService.createTaskQuery()
@@ -151,9 +136,8 @@ public class ActivitiProcessController {
 
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/get-active-tasks-by-assignee/{name}")
-    public List<Task> getactivetasksbyassignee(@PathVariable String assignee) {
+
+    public List<Task> getactivetasksbyassignee(String assignee) {
 
 		List<Task> tasks = taskService.createTaskQuery()
 				.taskCandidateUser(assignee)
@@ -165,9 +149,8 @@ public class ActivitiProcessController {
 
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping(value = "/claim-task-by-user/{name}", method = RequestMethod.POST)
-    public Task claimtaskbyuser(@RequestBody Task task,@PathVariable String name) {
+
+    public Task claimtaskbyuser(Task task, String name) {
 
 		taskService.claim(task.getId(), name);
 		
@@ -177,10 +160,9 @@ public class ActivitiProcessController {
         return taskres;	
 
 	}
+
 	
-	@PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping(value = "/complete-task-by-id/{taskid}", method = RequestMethod.POST)
-    public Task completetask(@RequestBody Map<String, Object> vars,@PathVariable String taskid) {
+    public Task completetask(Map<String, Object> vars, String taskid) {
 
 		taskService.complete(taskid,vars);
 		
@@ -191,9 +173,8 @@ public class ActivitiProcessController {
 
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping(value = "/start-process-by-name/{name}", method = RequestMethod.POST)
-    public ProcessInstance startprocessbyname(@RequestBody Map<String, Object> vars,@PathVariable String name) {
+
+    public ProcessInstance startprocessbyname(Map<String, Object> vars, String name) {
 
 		ProcessInstance processInstance= runtimeService.startProcessInstanceByKey(name, vars);
      

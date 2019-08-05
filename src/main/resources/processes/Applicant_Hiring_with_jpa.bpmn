@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef" xmlns:modeler="http://activiti.com/modeler" modeler:version="1.0en" modeler:exportDateTime="20150216104339475" modeler:modelId="933057" modeler:modelVersion="3" modeler:modelLastUpdated="1424083415708">
   <signal id="cancelApplication" name="cancelApplication"/>
   <process id="hireProcessWithJpa" name="Applicant Hiring" isExecutable="true">
-    <userTask id="sid-42BAE58A-8FFB-4B02-AAED-E0D8EA5A7E39" name="Telephone interview" activiti:candidateGroups="ROLE_TELEPHONE">
+    <userTask id="sid-42BAE58A-8FFB-4B02-AAED-E0D8EA5A7E39" name="Telephone interview" activiti:candidateGroups="TELEPHONE">
       <documentation>Conduct a telephone interview with ${applicant.name}. Phone number = ${applicant.phoneNumber}</documentation>
     </userTask>
     <exclusiveGateway id="sid-47ECD3C6-CA48-40D8-B478-6C26A122FA28"/>
@@ -30,8 +30,8 @@ My Corp</activiti:expression>
     <subProcess id="sid-304989D1-D3EC-4F89-A288-2238C7941973" name="subProcess">
       <startEvent id="sid-48CEC12C-2047-4B8B-94E9-371A379C3CF3"/>
       <parallelGateway id="sid-904B6A3F-4D05-408C-BF50-25194FBFE4CA"/>
-      <userTask id="sid-C2137C46-166B-4F9B-92A1-97BF920FCD9E" name="Tech interview" activiti:candidateGroups="ROLE_TECH"/>
-      <userTask id="sid-14429F68-4A79-47DC-A3F0-21804629FD88" name="Financial negotiation" activiti:candidateGroups="ROLE_FINANCE"/>
+      <userTask id="sid-C2137C46-166B-4F9B-92A1-97BF920FCD9E" name="Tech interview" activiti:candidateGroups="TECH"/>
+      <userTask id="sid-14429F68-4A79-47DC-A3F0-21804629FD88" name="Financial negotiation" activiti:candidateGroups="FINANCE"/>
       <parallelGateway id="sid-E16BD1C2-F09E-4946-A65A-3D2FBF1FC62E"/>
       <endEvent id="sid-DB05DC5F-A576-4E77-803A-C41AB0694245"/>
       <sequenceFlow id="sid-6984E944-1910-459D-8527-CAE4D8D8AB72" sourceRef="sid-48CEC12C-2047-4B8B-94E9-371A379C3CF3" targetRef="sid-904B6A3F-4D05-408C-BF50-25194FBFE4CA"/>

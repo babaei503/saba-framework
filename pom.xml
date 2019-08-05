@@ -76,7 +76,7 @@
 			<artifactId>activiti-spring-boot-starter-basic</artifactId>
 			<version>${activiti.version}</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring-boot-starter-rest-api</artifactId>
 			<version>${activiti.version}</version>

@@ -8,6 +8,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
 
 public interface JobRepository extends PagingAndSortingRepository<Job, Long> {
+	
+	Page<Job> findAll(Pageable pageable);
 
 	Page<Job> findByLocationAndOpen(String location, boolean open, Pageable pageable);
 
