@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ir.saeidbabaei.saba.bpms.BPMSProcessService;
+import ir.saeidbabaei.saba.bpms.IBPMSProcessService;
 import ir.saeidbabaei.saba.jwtauthentication.message.request.LoginForm;
 import ir.saeidbabaei.saba.jwtauthentication.message.request.SignUpForm;
 import ir.saeidbabaei.saba.jwtauthentication.message.response.JwtResponse;
@@ -54,7 +54,7 @@ public class AuthRestAPIs {
 	JwtProvider jwtProvider;
 	
     @Autowired
-    private BPMSProcessService bpmsprocessservice;
+    private IBPMSProcessService bpmsprocessservice;
        
 //    @Value("${server.port}")
 //    private static String serverport;
@@ -75,7 +75,7 @@ public class AuthRestAPIs {
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
 	}
 
-    //***********In the next step use LDAP and Active Directory for both spring boot and BPMS users ***********
+    //***********In the next step use LDAP/Active Directory for both spring boot and BPMS users ***********
 	//Confirmation of user must be implemented in the next step!!!!
 	//All roles can register but must be approved by administrator. 
 	@PostMapping("/signup")

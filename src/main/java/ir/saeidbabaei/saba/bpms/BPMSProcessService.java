@@ -4,19 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//If you want to use a BPM System except activiti just update this service class
+import ir.saeidbabaei.saba.bpms.model.TaskRef;
+
+/**Activiti BPM System that implement IBPMSProcessService interface.
+ * @see IBPMSProcessService
+ * 
+ * @author Saeid Babaei
+ *
+ */
 @Service
-public class BPMSProcessService {
+public class BPMSProcessService implements IBPMSProcessService {
 
 	
     @Autowired
@@ -27,158 +35,104 @@ public class BPMSProcessService {
     
     @Autowired 
     private IdentityService identityService;
+    
+    
+    //================================================================================
+    //Users, Groups and Membership region
+	//================================================================================
 	
-    //************Add bpms Groups	
-    public Group addbpmsgroup(String id, String name) {
-		  
-        Group group = identityService.newGroup(id);
-        group.setName(name);
-        group.setType("security-role");
-        identityService.saveGroup(group);
-
-        return group;
-
-    }
-	
-    //************Add bpms Users	
-    public User addbpmsuser(ir.saeidbabaei.saba.jwtauthentication.model.User user){
+    @Override
+    public ir.saeidbabaei.saba.jwtauthentication.model.User addbpmsuser(ir.saeidbabaei.saba.jwtauthentication.model.User user){
 		  
 	    User actuser = identityService.newUser(user.getUsername());
 	    actuser.setPassword(user.getPassword());	    
 	    identityService.saveUser(actuser);
 
-        return actuser;
+        return user;
 
     }
     
-    //************Add bpms User to Group	
-    public User addbpmsusertogroup(String groupid, String username){
+    @Override
+    public boolean addbpmsusertogroup(String groupid, String username){
 		  
         if (identityService.createGroupQuery().groupId(groupid).singleResult() != null) {
-        	identityService.createMembership(username, groupid);
+        	identityService.createMembership(username, groupid);    
+        	return true;
         }
-
-        return identityService.createUserQuery().userId(username).singleResult();
+        else
+        	throw new EntityNotFoundException("Group");
 
     }
     
-    //************get bpms Group	
-    public Group getbpmsgroupbyid(String groupid) {
-		  
-        return identityService.createGroupQuery().groupId(groupid).singleResult();
 
-    }   
+    //================================================================================
+    //Process region
+	//================================================================================
     
-    //************get bpms user	
-    public User getbpmsuserbyusername(String username){
-		  
-        return identityService.createUserQuery().userId(username).singleResult();
+    @Override
+    public String startprocessbyname(Map<String, Object> vars, String name) {
 
-    }   
- 
-    
-    public List<Task> getalltasks(String name) {
-	
-		List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().processDefinitionKey(name).list();
+		ProcessInstance processInstance= runtimeService.startProcessInstanceByKey(name, vars);
 		
-		List<Task> tasks = new ArrayList<Task>();
-		  
-		for (int i=0;i<processInstances.size();i++)
-		{
-
-		  List<Task> ptask= taskService.createTaskQuery()
-                .processInstanceId(processInstances.get(i).getProcessInstanceId())
-                .orderByProcessInstanceId().asc()
-                .list();
-		  
-			for (int j=0;j<ptask.size();j++)				  
-			  tasks.add(ptask.get(j));
-				
-		}
-       return tasks;
+		return processInstance.getId();
 
 	}
-	
-
-    public List<Task> getactivetasks(String name) {
-	
-		List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().processDefinitionKey(name).active().list();
-		
-		List<Task> tasks = new ArrayList<Task>();
-		  
-		for (int i=0;i<processInstances.size();i++)
-		{
-
-			  List<Task> ptask= taskService.createTaskQuery()
-		                .processInstanceId(processInstances.get(i).getProcessInstanceId())
-		                .orderByProcessInstanceId().asc()
-		                .list();
-				  
-					for (int j=0;j<ptask.size();j++)				  
-					  tasks.add(ptask.get(j));
-		
-		}
-       return tasks;
-
-	}
-	
-
-    public List<Task> getactivetasksbygroup(String name) {
-
-       
+    
+    //================================================================================
+    //Task region
+	//================================================================================
+    
+    @Override
+	public List<TaskRef> getactivetasksbygroup(String name) {
+             
         List<Task> tasks = taskService.createTaskQuery()
                 .taskCandidateGroup(name)
                 .active()
-                .orderByTaskName().asc()
+                .orderByTaskPriority().asc()
+                .orderByTaskCreateTime().asc()
                 .list();
         
-        return tasks;	
 
-	}
-	
-
-    public List<Task> getactivetasksbyassignee(String assignee) {
-
-		List<Task> tasks = taskService.createTaskQuery()
-				.taskCandidateUser(assignee)
-				.active()
-                .orderByTaskName().asc()
-				.list();
+        List<TaskRef> customTaskList= new ArrayList<TaskRef>();
         
-        return tasks;	
+        tasks.forEach(taskitem -> {
+        	customTaskList.add(
+        			new TaskRef(taskitem.getId(),taskitem.getName(),taskitem.getAssignee(),taskitem.getCategory(),
+        						taskitem.getClaimTime(),taskitem.getCreateTime(),taskitem.getDescription(),
+        						taskitem.getDueDate(),taskitem.getPriority(),taskitem.getProcessDefinitionId()));
+        });
+        
+        return customTaskList;     	
 
 	}
-	
+    
+    @Override
+    public TaskRef claimtaskbyuser(String taskid, String username) {
 
-    public Task claimtaskbyuser(Task task, String name) {
-
-		taskService.claim(task.getId(), name);
+		taskService.claim(taskid, username);
 		
-		Task taskres = taskService.createTaskQuery()
-				.taskId(task.getId()).singleResult();
+		Task taskitem = taskService.createTaskQuery()
+				.taskId(taskid)
+				.singleResult();
      
-        return taskres;	
+        return new TaskRef(taskitem.getId(),taskitem.getName(),taskitem.getAssignee(),taskitem.getCategory(),
+        				   taskitem.getClaimTime(),taskitem.getCreateTime(),taskitem.getDescription(),
+        				   taskitem.getDueDate(),taskitem.getPriority(),taskitem.getProcessDefinitionId());	
 
 	}
-
 	
-    public Task completetask(Map<String, Object> vars, String taskid) {
+
+    @Override
+    public TaskRef completetaskbyid(String taskid, Map<String, Object> vars) {
 
 		taskService.complete(taskid,vars);
 		
-		Task taskres = taskService.createTaskQuery()
+		Task taskitem = taskService.createTaskQuery()
 				.taskId(taskid).singleResult();
      
-        return taskres;	
-
-	}
-
-
-    public ProcessInstance startprocessbyname(Map<String, Object> vars, String name) {
-
-		ProcessInstance processInstance= runtimeService.startProcessInstanceByKey(name, vars);
-     
-        return processInstance;	
+        return new TaskRef(taskitem.getId(),taskitem.getName(),taskitem.getAssignee(),taskitem.getCategory(),
+				   taskitem.getClaimTime(),taskitem.getCreateTime(),taskitem.getDescription(),
+				   taskitem.getDueDate(),taskitem.getPriority(),taskitem.getProcessDefinitionId());	
 
 	}
 	

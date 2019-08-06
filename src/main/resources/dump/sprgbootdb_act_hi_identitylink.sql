@@ -42,7 +42,7 @@ CREATE TABLE `act_hi_identitylink` (
 
 LOCK TABLES `act_hi_identitylink` WRITE;
 /*!40000 ALTER TABLE `act_hi_identitylink` DISABLE KEYS */;
-INSERT INTO `act_hi_identitylink` VALUES ('10008','dev-managers','candidate',NULL,'10007',NULL),('10021','dev-management','candidate',NULL,'10020',NULL),('10024','finance','candidate',NULL,'10023',NULL),('15008','dev-managers','candidate',NULL,'15007',NULL),('17508','dev-managers','candidate',NULL,'17507',NULL),('20013','dev-management','candidate',NULL,'20012',NULL),('20016','finance','candidate',NULL,'20015',NULL),('22508','dev-managers','candidate',NULL,'22507',NULL),('22521','dev-management','candidate',NULL,'22520',NULL),('22524','finance','candidate',NULL,'22523',NULL),('25008','dev-managers','candidate',NULL,'25007',NULL),('27508','dev-managers','candidate',NULL,'27507',NULL),('30008','dev-managers','candidate',NULL,'30007',NULL),('30016','dev-managers','candidate',NULL,'30015',NULL),('30024','dev-managers','candidate',NULL,'30023',NULL),('32508','dev-managers','candidate',NULL,'32507',NULL),('32516','dev-managers','candidate',NULL,'32515',NULL),('35008','dev-managers','candidate',NULL,'35007',NULL),('37508','dev-managers','candidate',NULL,'37507',NULL),('37516','dev-managers','candidate',NULL,'37515',NULL),('40008','dev-managers','candidate',NULL,'40007',NULL),('40016','dev-managers','candidate',NULL,'40015',NULL),('40024','dev-managers','candidate',NULL,'40023',NULL),('40032','dev-managers','candidate',NULL,'40031',NULL),('40040','dev-managers','candidate',NULL,'40039',NULL),('40048','dev-managers','candidate',NULL,'40047',NULL),('45008','dev-managers','candidate',NULL,'45007',NULL),('45016','dev-managers','candidate',NULL,'45015',NULL),('47508','dev-managers','candidate',NULL,'47507',NULL),('50008','dev-managers','candidate',NULL,'50007',NULL),('50016','dev-managers','candidate',NULL,'50015',NULL),('50024','dev-managers','candidate',NULL,'50023',NULL),('50032','dev-managers','candidate',NULL,'50031',NULL),('7508','dev-managers','candidate',NULL,'7507',NULL),('7521','dev-management','candidate',NULL,'7520',NULL),('7524','finance','candidate',NULL,'7523',NULL);
+INSERT INTO `act_hi_identitylink` VALUES ('90011','TELEPHONE','candidate',NULL,'90010',NULL),('92501',NULL,'participant','telephone1',NULL,'90005');
 /*!40000 ALTER TABLE `act_hi_identitylink` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-03  0:29:47
+-- Dump completed on 2019-08-06 16:22:32

@@ -78,6 +78,17 @@ public class Job  {
 
     public Job() {};
     		
+	/**
+	 * @param code        Job code.
+	 * @param title       Job title.
+	 * @param company     Company of job.
+	 * @param location    Location of job.
+	 * @param employment  Contract type for example Full Time.
+	 * @param jobfunction Function of job for example Engineering.
+	 * @param industry    Job industry.
+	 * @param description Description of job.
+	 * @param open        Is the job Open.
+	 */
 	public Job(@Size(min = 3, max = 45) @NotNull String code, @Size(min = 3, max = 45) @NotNull String title,
 			@Size(min = 3, max = 45) @NotNull String company, @Size(min = 3, max = 45) @NotNull String location,
 			@Size(min = 3, max = 45) @NotNull String employment, @Size(min = 3, max = 45) @NotNull String jobfunction,
@@ -94,85 +105,147 @@ public class Job  {
 		this.description = description;
 		this.open = open;
 	}
-    
+
+	/**
+	 * @return the id
+	 */
 	public long getId() {
-		return this.id;
+		return id;
 	}
 
+	/**
+	 * @param id the id to set
+	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return the code
+	 */
 	public String getCode() {
-		return this.code;
+		return code;
 	}
 
+	/**
+	 * @param code the code to set
+	 */
 	public void setCode(String code) {
 		this.code = code;
 	}
 
+	/**
+	 * @return the title
+	 */
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
+	/**
+	 * @param title the title to set
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
+	/**
+	 * @return the company
+	 */
 	public String getCompany() {
 		return company;
 	}
 
+	/**
+	 * @param company the company to set
+	 */
 	public void setCompany(String company) {
 		this.company = company;
 	}
 
+	/**
+	 * @return the location
+	 */
 	public String getLocation() {
 		return location;
 	}
 
+	/**
+	 * @param location the location to set
+	 */
 	public void setLocation(String location) {
 		this.location = location;
 	}
 
+	/**
+	 * @return the employment
+	 */
 	public String getEmployment() {
 		return employment;
 	}
 
+	/**
+	 * @param employment the employment to set
+	 */
 	public void setEmployment(String employment) {
 		this.employment = employment;
 	}
 
+	/**
+	 * @return the job function
+	 */
 	public String getJobfunction() {
 		return jobfunction;
 	}
 
+	/**
+	 * @param jobfunction the job function to set
+	 */
 	public void setJobfunction(String jobfunction) {
 		this.jobfunction = jobfunction;
 	}
 
+	/**
+	 * @return the industry
+	 */
 	public String getIndustry() {
 		return industry;
 	}
 
+	/**
+	 * @param industry the industry to set
+	 */
 	public void setIndustry(String industry) {
 		this.industry = industry;
 	}
 
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the open
+	 */
 	public boolean isOpen() {
 		return open;
 	}
 
+	/**
+	 * @param open the open to set
+	 */
 	public void setOpen(boolean open) {
 		this.open = open;
 	}
+    
+
 
 }

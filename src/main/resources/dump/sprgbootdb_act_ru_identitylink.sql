@@ -49,7 +49,7 @@ CREATE TABLE `act_ru_identitylink` (
 
 LOCK TABLES `act_ru_identitylink` WRITE;
 /*!40000 ALTER TABLE `act_ru_identitylink` DISABLE KEYS */;
-INSERT INTO `act_ru_identitylink` VALUES ('10021',1,'dev-management','candidate',NULL,'10020',NULL,NULL),('20013',1,'dev-management','candidate',NULL,'20012',NULL,NULL),('20016',1,'finance','candidate',NULL,'20015',NULL,NULL),('22508',1,'dev-managers','candidate',NULL,'22507',NULL,NULL),('22521',1,'dev-management','candidate',NULL,'22520',NULL,NULL),('22524',1,'finance','candidate',NULL,'22523',NULL,NULL),('25008',1,'dev-managers','candidate',NULL,'25007',NULL,NULL),('27508',1,'dev-managers','candidate',NULL,'27507',NULL,NULL),('30008',1,'dev-managers','candidate',NULL,'30007',NULL,NULL),('30016',1,'dev-managers','candidate',NULL,'30015',NULL,NULL),('30024',1,'dev-managers','candidate',NULL,'30023',NULL,NULL),('32508',1,'dev-managers','candidate',NULL,'32507',NULL,NULL),('32516',1,'dev-managers','candidate',NULL,'32515',NULL,NULL),('35008',1,'dev-managers','candidate',NULL,'35007',NULL,NULL),('37508',1,'dev-managers','candidate',NULL,'37507',NULL,NULL),('37516',1,'dev-managers','candidate',NULL,'37515',NULL,NULL),('40008',1,'dev-managers','candidate',NULL,'40007',NULL,NULL),('40016',1,'dev-managers','candidate',NULL,'40015',NULL,NULL),('40024',1,'dev-managers','candidate',NULL,'40023',NULL,NULL),('40032',1,'dev-managers','candidate',NULL,'40031',NULL,NULL),('40040',1,'dev-managers','candidate',NULL,'40039',NULL,NULL),('40048',1,'dev-managers','candidate',NULL,'40047',NULL,NULL),('45008',1,'dev-managers','candidate',NULL,'45007',NULL,NULL),('45016',1,'dev-managers','candidate',NULL,'45015',NULL,NULL),('47508',1,'dev-managers','candidate',NULL,'47507',NULL,NULL),('50008',1,'dev-managers','candidate',NULL,'50007',NULL,NULL),('50016',1,'dev-managers','candidate',NULL,'50015',NULL,NULL),('50024',1,'dev-managers','candidate',NULL,'50023',NULL,NULL),('50032',1,'dev-managers','candidate',NULL,'50031',NULL,NULL),('7521',1,'dev-management','candidate',NULL,'7520',NULL,NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('90011',1,'TELEPHONE','candidate',NULL,'90010',NULL,NULL),('92501',1,NULL,'participant','telephone1',NULL,'90005',NULL);
 /*!40000 ALTER TABLE `act_ru_identitylink` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-03  0:29:51
+-- Dump completed on 2019-08-06 16:22:34

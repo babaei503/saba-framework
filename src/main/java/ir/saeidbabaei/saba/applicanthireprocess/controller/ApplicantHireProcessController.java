@@ -1,19 +1,21 @@
 package ir.saeidbabaei.saba.applicanthireprocess.controller;
 
-import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant;
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
 import ir.saeidbabaei.saba.applicanthireprocess.service.IApplicantService;
 import ir.saeidbabaei.saba.applicanthireprocess.service.IJobService;
-import ir.saeidbabaei.saba.bpms.BPMSProcessService;
+import ir.saeidbabaei.saba.bpms.IBPMSProcessService;
+import ir.saeidbabaei.saba.bpms.model.TaskRef;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,13 +25,16 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+/**
+ * 
+ * @author Saeid Babaei
+ *
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class ApplicantHireProcessController {
     
-    @Autowired
-    private TaskService taskService;
 
     @Autowired
     private IApplicantService applicantservice;
@@ -38,16 +43,18 @@ public class ApplicantHireProcessController {
     private IJobService jobservice;
     
     @Autowired
-    private BPMSProcessService bpmsprocessservice;
+    private IBPMSProcessService bpmsprocessservice;
     
 
-	//***************************
-	//***************************
+    //================================================================================
 	//Applicant Rest API Section
-	//***************************
-	//***************************
+    //================================================================================
     
-    //Saving applicant and start applicant hire process
+    /**Saving applicant and start applicant hire process.
+     * 
+     * @param  applicant Applicant information.
+     * @return 			 Response 200 OK. Applicant info.
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/start-applicant-hire-process", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -63,7 +70,10 @@ public class ApplicantHireProcessController {
         return ResponseEntity.ok(applicant);
     }
        
-    //Get list of all applicant
+    /**Get list of all applicant.
+     * 
+     * @return Response 200 OK. List of applicant.
+     */
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/get-applicant-list", method = RequestMethod.GET)
 	public ResponseEntity<List<Applicant>> getapplicantlist() {
@@ -71,7 +81,11 @@ public class ApplicantHireProcessController {
 		  return ResponseEntity.ok(applicantservice.findAll());
 	}
 	  
-	//Retrieve applicant by id
+	/**Retrieve applicant by id.
+	 * 
+	 * @param id Applicant id.
+     * @return   Response 200 OK. Applicant info.
+	 */
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/applicant/edit/{id}")
 	public ResponseEntity<Applicant> retrieveApplicant(@PathVariable long id) {
@@ -83,7 +97,12 @@ public class ApplicantHireProcessController {
 	        return ResponseEntity.ok(applicant.get());
 	}
 
-	//Update applicant by id
+	/**Update applicant by id.
+	 * 
+	 * @param applicant Applicant update info.
+	 * @param id        Applicant id that should be updated. 
+	 * @return			Response 200 OK. applicant info.
+	 */
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/applicant/update/{id}")
 	public ResponseEntity<Applicant> updateApplicant(@RequestBody Applicant applicant, @PathVariable long id) {
@@ -100,7 +119,12 @@ public class ApplicantHireProcessController {
 		return ResponseEntity.ok(applicant);
 	}
 	
-	//Delete applicant by id
+	/**Delete applicant by id.
+	 * 
+	 * @param  id Applicant id that should be deleted.
+	 * @return 	  Response 202 Accepted.
+	 * @throw  	  EntityNotFoundException.
+	 */
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/applicant/delete/{id}")
 	public ResponseEntity<Applicant> deleteApplicant(@PathVariable long id) {
@@ -116,13 +140,18 @@ public class ApplicantHireProcessController {
 		
 	}
 	
-	//*******************************
-	//*******************************
+
+	//================================================================================
 	//Job Rest API Section
-	//*******************************
-	//*******************************
+	//================================================================================
+
 	
-	//Get list of all job
+	/**Get list of all job with pagination.
+	 * 
+	 * @param page 		The page number that should be get. start from 0.
+	 * @param itemcount Number of item in page.
+	 * @return 			Response 200 OK. List of jobs.
+	 */
 	@RequestMapping(value = "/get-job-list/{page}/{itemcount}", method = RequestMethod.GET)
 	public ResponseEntity<Page<Job>> getjoblist(@PathVariable int page, @PathVariable int itemcount) {
 	      
@@ -130,7 +159,14 @@ public class ApplicantHireProcessController {
 	}
 	
 	
-	//Get list of open job by location and title-- page number and count of item
+	/**Get list of open job by location and title.
+	 * 
+	 * @param  location  Job location should be searched.
+	 * @param  title     Job title should be searched.
+	 * @param  page      The page number that should be get. start from 0.
+	 * @param  itemcount Number of item in page.
+	 * @return           Response 200 OK. List of jobs.
+	 */
 	@RequestMapping(value = "/get-open-job-list-by-location-title/{location}/{title}/{page}/{itemcount}", method = RequestMethod.GET)
 	public ResponseEntity<Page<Job>> getopenjoblistbylocationAndTitle(@PathVariable String location,@PathVariable String title, @PathVariable int page, @PathVariable int itemcount) {
 	      
@@ -144,7 +180,11 @@ public class ApplicantHireProcessController {
 			 return ResponseEntity.ok(jobservice.findByTitleAndOpen(title,true,page,itemcount));
 	}
 	
-	//Get job by id
+	/**Get job by id
+	 * 
+	 * @param   jobid Job id.
+	 * @return 		  Response 200 OK. Job info.
+	 */
 	@RequestMapping(value = "/get-job-by-id/{jobid}", method = RequestMethod.GET)
 	public ResponseEntity<Optional<Job>> getjobbyid(@PathVariable long jobid) {
 	      
@@ -152,53 +192,135 @@ public class ApplicantHireProcessController {
 	}	
 	
 	
-	//*****************************************
-	//*****************************************
+	//================================================================================
 	//Call BPMS Rest API for hiring tasks
-	//*****************************************
-	//*****************************************
+	//================================================================================
+
 	
-	//Complete phone interview task by task id
-	//Send task variable (telephoneInterviewOutcome=true) to BPMS for complete task
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/complete-phoneinterview-task/{id}")
-    public String completephoneinterviewtaskbytaskid(@PathVariable String id) {
+	/**Get active phone interview tasks.
+	 * 
+	 * @return List of tasks.
+	 */
+	@PreAuthorize("hasRole('TELEPHONE')")
+	@GetMapping("/get-active-phoneinterview-tasks")
+    public List<TaskRef> getactivephoneinterviewtasks() {
 				       
-	        // Completing the phone interview with success should trigger two new tasks
-	        Map<String, Object> taskVariables = new HashMap<String, Object>();
-	        taskVariables.put("telephoneInterviewOutcome", true);
-	        taskService.complete(id, taskVariables);
-	
-	        return "phoneinterview Complete";	        
+		return bpmsprocessservice.getactivetasksbygroup("TELEPHONE");
 		
 	}	
 	
-	//Complete tech interview task by taskid
-	//Send task variable (techOk=true) to BPMS for complete task
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/complete-techinterview-task/{id}")
-    public String completetechinterviewtaskbytaskid(@PathVariable String id) {
+	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//Claim task 
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	
+	/**Claim phone interview task by user.
+	 * 
+	 * @param   taskid   Task id.
+	 * @return           Task.
+	 */
+	@PreAuthorize("hasRole('TELEPHONE')")
+	@GetMapping("/claim-phoneinterview-task/{taskid}")
+    public TaskRef claimphoneinterviewtask(@PathVariable String taskid) {
+				       
+		return  bpmsprocessservice.claimtaskbyuser(taskid, getusername());     
+		
+	}
+	
+	/**Claim technical interview task by user.
+	 * 
+	 * @param   taskid   Task id.
+	 * @return           Task.
+	 */
+	@PreAuthorize("hasRole('TECH')")
+	@GetMapping("/claim-techinterview-task/{taskid}")
+    public TaskRef claimtechinterviewtask(@PathVariable String taskid) {
+				       
+		return  bpmsprocessservice.claimtaskbyuser(taskid, getusername());     
+		
+	}
+	
+	/**Claim Finance negotiation task by user.
+	 * 
+	 * @param   taskid   Task id.
+	 * @return           Task.
+	 */
+	@PreAuthorize("hasRole('FINANCE')")
+	@GetMapping("/claim-financenegotiation-task/{taskid}")
+    public TaskRef claimfinancenegotiationtask(@PathVariable String taskid) {
+				       
+		return  bpmsprocessservice.claimtaskbyuser(taskid, getusername());     
+		
+	}
+	
+	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//Complete task 
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	
+	/**Complete phone interview task by task id.<br/>
+	 * Completing the phone interview with success should trigger two new tasks.
+	 * 
+	 * @param  id Task id.
+	 * @return 	  Task.
+	 */
+	@PreAuthorize("hasRole('TELEPHONE')")
+	@GetMapping("/complete-phoneinterview-task/{taskid}")
+    public TaskRef completephoneinterviewtaskbytaskid(@PathVariable String taskid) {
+				       
+	        Map<String, Object> taskVariables = new HashMap<String, Object>();
+	        taskVariables.put("telephoneInterviewOutcome", true);
+	        
+	        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);        
+		
+	}	
+	
+	/**Complete technical interview task by task id.
+	 * 
+	 * @param  id Task id.
+	 * @return 	  Task.
+	 */
+	@PreAuthorize("hasRole('TECH')")
+	@GetMapping("/complete-techinterview-task/{taskid}")
+    public TaskRef completetechinterviewtaskbytaskid(@PathVariable String taskid) {
 				       
 	        Map<String, Object> taskVariables = new HashMap<String, Object>();
 	        taskVariables.put("techOk", true);
-	        taskService.complete(id, taskVariables);
-	
-	        return "techinterview Complete";
+	        
+	        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);
 	       		
 	}	
-	
-	//Complete financial task by taskid
-	//Send task variable (financialOk=true) to BPMS for complete task
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/complete-financialnegotiation-task/{id}")
-    public String completefinancialnegotiationtaskbytaskid(@PathVariable String id) {
+
+	/**Complete financial negotiation task by task id.
+	 * 
+	 * @param  id Task id.
+	 * @return 	  Task.
+	 */
+	@PreAuthorize("hasRole('FINANCE')")
+	@GetMapping("/complete-financialnegotiation-task/{taskid}")
+    public TaskRef completefinancialnegotiationtaskbytaskid(@PathVariable String taskid) {
 				       
 	        Map<String, Object> taskVariables = new HashMap<String, Object>();
 	        taskVariables.put("financialOk", true);
-	        taskService.complete(id, taskVariables);
-	
-	        return "financialnegotiation Complete";
+	        
+	        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);
 	        		
+	}
+
+	
+	//================================================================================
+	//Others
+	//================================================================================
+	
+	
+	private String getusername()
+	{
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		return ((UserDetails)principal).getUsername();
+
 	}
 
 }
