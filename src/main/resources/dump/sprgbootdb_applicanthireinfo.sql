@@ -16,25 +16,38 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `hibernate_sequence`
+-- Table structure for table `applicanthireinfo`
 --
 
-DROP TABLE IF EXISTS `hibernate_sequence`;
+DROP TABLE IF EXISTS `applicanthireinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `hibernate_sequence` (
-  `next_val` bigint(20) DEFAULT NULL
+CREATE TABLE `applicanthireinfo` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `applicantid` bigint(20) NOT NULL,
+  `telintviwres` tinyint(4) DEFAULT NULL,
+  `telintviwdesc` varchar(4000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `techintviwres` tinyint(4) DEFAULT NULL,
+  `techintviwdesc` varchar(4000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `finnegotres` tinyint(4) DEFAULT NULL,
+  `finnegotdesc` varchar(4000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `creator` tinyblob,
+  `modified_at` datetime DEFAULT NULL,
+  `modifier` tinyblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `applicantid_UNIQUE` (`applicantid`),
+  CONSTRAINT `fk_hire_applicant` FOREIGN KEY (`applicantid`) REFERENCES `applicant` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `hibernate_sequence`
+-- Dumping data for table `applicanthireinfo`
 --
 
-LOCK TABLES `hibernate_sequence` WRITE;
-/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` VALUES (26),(26),(26);
-/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+LOCK TABLES `applicanthireinfo` WRITE;
+/*!40000 ALTER TABLE `applicanthireinfo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `applicanthireinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -46,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-09 23:32:15
+-- Dump completed on 2019-08-09 23:32:25

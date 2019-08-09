@@ -24,7 +24,7 @@ public class TaskRef  {
 	
 	private String description;
 	
-	private Date duodate;
+	private Date duedate;
 	
 	private int priority;
 	
@@ -39,12 +39,12 @@ public class TaskRef  {
 	 * @param claimTime Task claim time
 	 * @param createTime Task create time
 	 * @param description Task description
-	 * @param duoDate Task duo date
+	 * @param dueDate Task due date
 	 * @param priority Task priority
 	 * @param processDefinitionId Process definition Id of task
 	 */
 	public TaskRef(String taskid, String name, String assignee, String category, Date claimtime, Date createtime,
-			String description, Date duodate, int priority, String processdefinitionid) {
+			String description, Date duedate, int priority, String processdefinitionid) {
 		super();
 		this.taskid = taskid;
 		this.name = name;
@@ -53,7 +53,7 @@ public class TaskRef  {
 		this.claimtime = claimtime;
 		this.createtime = createtime;
 		this.description = description;
-		this.duodate = duodate;
+		this.duedate = duedate;
 		this.priority = priority;
 		this.processdefinitionid = processdefinitionid;
 	}
@@ -172,18 +172,18 @@ public class TaskRef  {
 
 
 	/**
-	 * @return the duo date
+	 * @return the due date
 	 */
-	public Date getDuodate() {
-		return duodate;
+	public Date getDuedate() {
+		return duedate;
 	}
 
 
 	/**
-	 * @param duodate the duo date to set
+	 * @param duedate the due date to set
 	 */
-	public void setDuodate(Date duodate) {
-		this.duodate = duodate;
+	public void setDuedate(Date duedate) {
+		this.duedate = duedate;
 	}
 
 

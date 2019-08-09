@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
--- Host: localhost    Database: sprgbootdb
+-- Host: 127.0.0.1    Database: sprgbootdb
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -49,7 +49,7 @@ CREATE TABLE `act_ru_identitylink` (
 
 LOCK TABLES `act_ru_identitylink` WRITE;
 /*!40000 ALTER TABLE `act_ru_identitylink` DISABLE KEYS */;
-INSERT INTO `act_ru_identitylink` VALUES ('90011',1,'TELEPHONE','candidate',NULL,'90010',NULL,NULL),('92501',1,NULL,'participant','telephone1',NULL,'90005',NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('90011',1,'TELEPHONE','candidate',NULL,'90010',NULL,NULL),('92501',1,NULL,'participant','telephone1',NULL,'90005',NULL),('95007',1,'TELEPHONE','candidate',NULL,'95006',NULL,NULL),('97507',1,'TELEPHONE','candidate',NULL,'97506',NULL,NULL),('97508',1,NULL,'participant','telephone1',NULL,'97501',NULL);
 /*!40000 ALTER TABLE `act_ru_identitylink` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-06 16:22:34
+-- Dump completed on 2019-08-09 23:32:42

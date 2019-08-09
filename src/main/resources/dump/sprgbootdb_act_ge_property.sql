@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
--- Host: localhost    Database: sprgbootdb
+-- Host: 127.0.0.1    Database: sprgbootdb
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -36,7 +36,7 @@ CREATE TABLE `act_ge_property` (
 
 LOCK TABLES `act_ge_property` WRITE;
 /*!40000 ALTER TABLE `act_ge_property` DISABLE KEYS */;
-INSERT INTO `act_ge_property` VALUES ('cfg.execution-related-entities-count','false',1),('next.dbid','95001',39),('schema.history','create(6.0.0.4)',1),('schema.version','6.0.0.4',1);
+INSERT INTO `act_ge_property` VALUES ('cfg.execution-related-entities-count','false',1),('next.dbid','100001',41),('schema.history','create(6.0.0.4)',1),('schema.version','6.0.0.4',1);
 /*!40000 ALTER TABLE `act_ge_property` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-06 16:22:35
+-- Dump completed on 2019-08-09 23:32:44

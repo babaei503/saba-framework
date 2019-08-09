@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
--- Host: localhost    Database: sprgbootdb
+-- Host: 127.0.0.1    Database: sprgbootdb
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -52,7 +52,7 @@ CREATE TABLE `act_ru_variable` (
 
 LOCK TABLES `act_ru_variable` WRITE;
 /*!40000 ALTER TABLE `act_ru_variable` DISABLE KEYS */;
-INSERT INTO `act_ru_variable` VALUES ('90006',1,'jpa-entity','applicant','90005','90005',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','36');
+INSERT INTO `act_ru_variable` VALUES ('90006',1,'jpa-entity','applicant','90005','90005',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','36'),('95002',1,'jpa-entity','applicant','95001','95001',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','37'),('97502',1,'jpa-entity','applicant','97501','97501',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','38');
 /*!40000 ALTER TABLE `act_ru_variable` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -65,4 +65,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-06 16:22:30
+-- Dump completed on 2019-08-09 23:32:32

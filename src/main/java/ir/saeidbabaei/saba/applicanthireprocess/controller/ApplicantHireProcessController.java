@@ -11,8 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant;
+import ir.saeidbabaei.saba.applicanthireprocess.entity.Applicanthireinfo;
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
 import ir.saeidbabaei.saba.applicanthireprocess.service.IApplicantService;
+import ir.saeidbabaei.saba.applicanthireprocess.service.IApplicanthireinfoService;
 import ir.saeidbabaei.saba.applicanthireprocess.service.IJobService;
 import ir.saeidbabaei.saba.bpms.IBPMSProcessService;
 import ir.saeidbabaei.saba.bpms.model.TaskRef;
@@ -44,6 +46,9 @@ public class ApplicantHireProcessController {
     
     @Autowired
     private IBPMSProcessService bpmsprocessservice;
+    
+    @Autowired
+    private IApplicanthireinfoService applicanthireinfoservice;
     
 
     //================================================================================
@@ -89,6 +94,7 @@ public class ApplicantHireProcessController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/applicant/edit/{id}")
 	public ResponseEntity<Applicant> retrieveApplicant(@PathVariable long id) {
+		
 			Optional<Applicant> applicant = applicantservice.findById(id);
 
 			if (!applicant.isPresent())
@@ -207,7 +213,45 @@ public class ApplicantHireProcessController {
 				       
 		return bpmsprocessservice.getactivetasksbygroup("TELEPHONE");
 		
+	}
+	
+	/**Get active phone interview tasks by assignee.
+	 * 
+	 * @return 	List of tasks.
+	 */
+	@PreAuthorize("hasRole('TELEPHONE')")
+	@GetMapping("/get-active-phoneinterviewtasks-assignee")
+    public List<TaskRef> getactivepitasksbyassignee() {
+				       
+		return bpmsprocessservice.getactivetasksbyassigneeandgroup(getusername(), "TELEPHONE");
+		
 	}	
+	
+	/**Get phone interview task by id and assignee.
+	 * 
+	 * @param 	taskid	Task id
+	 * @return			Task
+	 */
+	@PreAuthorize("hasRole('TELEPHONE') or hasRole('TECH') or hasRole('FINANCE')")
+	@GetMapping("/get-task-by-id-assignee/{taskid}")
+    public TaskRef gettaskbyidandassignee(@PathVariable String taskid) {
+				       
+		return bpmsprocessservice.gettaskbyidandassignee(taskid, getusername());
+		
+	}	
+	
+    /**Get Process variables by task id and assignee.
+     * 
+     * @param taskid	Task id
+     * @return			Process variables
+     */
+	@PreAuthorize("hasRole('TELEPHONE') or hasRole('TECH') or hasRole('FINANCE')")
+	@GetMapping("/get-hireprocvars-by-taskid-assignee/{taskid}")
+    public Map<String, Object> getprocessvarsbytaskidandassignee(@PathVariable String taskid){
+    	
+		return bpmsprocessservice.getprocessvarsbytaskidandassignee(taskid, getusername());
+		
+    }
 	
 	
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -259,53 +303,88 @@ public class ApplicantHireProcessController {
 	//Complete task 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	
 	/**Complete phone interview task by task id.<br/>
 	 * Completing the phone interview with success should trigger two new tasks.
 	 * 
-	 * @param  id Task id.
-	 * @return 	  Task.
+	 * @param  id 					Task id.
+	 * @param  applicanthireinfo	Applicant hire info.
+	 * @return 	  					Task.
 	 */
 	@PreAuthorize("hasRole('TELEPHONE')")
-	@GetMapping("/complete-phoneinterview-task/{taskid}")
-    public TaskRef completephoneinterviewtaskbytaskid(@PathVariable String taskid) {
-				       
-	        Map<String, Object> taskVariables = new HashMap<String, Object>();
-	        taskVariables.put("telephoneInterviewOutcome", true);
-	        
-	        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);        
+    @ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/complete-phoneinterview-task/{taskid}", method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public TaskRef completephoneinterviewtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+		
+    	//Save applicant hire info
+        applicanthireinfoservice.save(applicanthireinfo);
+        
+        Map<String, Object> taskVariables = new HashMap<String, Object>();
+        taskVariables.put("telephoneInterviewOutcome", applicanthireinfo.getTelintviwres());
+        
+        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);        
 		
 	}	
 	
 	/**Complete technical interview task by task id.
 	 * 
-	 * @param  id Task id.
-	 * @return 	  Task.
+	 * @param  id 					Task id.
+	 * @param  applicanthireinfo	Applicant hire info.
+	 * @return 	  					Task.
 	 */
 	@PreAuthorize("hasRole('TECH')")
-	@GetMapping("/complete-techinterview-task/{taskid}")
-    public TaskRef completetechinterviewtaskbytaskid(@PathVariable String taskid) {
-				       
-	        Map<String, Object> taskVariables = new HashMap<String, Object>();
-	        taskVariables.put("techOk", true);
-	        
-	        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);
+    @ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/complete-techinterview-task/{taskid}", method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public TaskRef completetechinterviewtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+		
+		//Find applicant hire info
+		Applicanthireinfo aphinfo = applicanthireinfoservice.findApplicanthireinfoByApplicant(applicanthireinfo.getApplicant());
+		
+		//Update technical info
+		aphinfo.setTechintviwres(applicanthireinfo.getTechintviwres());
+		aphinfo.setTechintviwdesc(applicanthireinfo.getTechintviwdesc());
+		
+    	//Save applicant hire info
+        applicanthireinfoservice.save(aphinfo);
+        
+        //Set task variables	
+        Map<String, Object> taskVariables = new HashMap<String, Object>();
+        taskVariables.put("techOk", applicanthireinfo.getTechintviwres());
+        
+        //Complete task
+        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);
 	       		
 	}	
 
 	/**Complete financial negotiation task by task id.
 	 * 
-	 * @param  id Task id.
-	 * @return 	  Task.
+	 * @param  id 					Task id.
+	 * @param  applicanthireinfo	Applicant hire info.
+	 * @return 	  					Task.
 	 */
 	@PreAuthorize("hasRole('FINANCE')")
-	@GetMapping("/complete-financialnegotiation-task/{taskid}")
-    public TaskRef completefinancialnegotiationtaskbytaskid(@PathVariable String taskid) {
-				       
-	        Map<String, Object> taskVariables = new HashMap<String, Object>();
-	        taskVariables.put("financialOk", true);
-	        
-	        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);
+    @ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/complete-financialnegotiation-task/{taskid}", method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public TaskRef completefinancialnegotiationtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+		
+		//Find applicant hire info
+		Applicanthireinfo aphinfo = applicanthireinfoservice.findApplicanthireinfoByApplicant(applicanthireinfo.getApplicant());
+		
+		//Update finance info
+		aphinfo.setFinnegotres(applicanthireinfo.getFinnegotres());
+		aphinfo.setFinnegotdesc(applicanthireinfo.getFinnegotdesc());
+		
+    	//Save applicant hire info
+        applicanthireinfoservice.save(aphinfo);
+        
+        //Set task variables
+        Map<String, Object> taskVariables = new HashMap<String, Object>();
+        taskVariables.put("financialOk", applicanthireinfo.getFinnegotres());
+        
+        //Complete task
+        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);
 	        		
 	}
 
@@ -315,6 +394,10 @@ public class ApplicantHireProcessController {
 	//================================================================================
 	
 	
+	/**Get authenticated user name
+	 * 
+	 * @return Signed in user name
+	 */
 	private String getusername()
 	{
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

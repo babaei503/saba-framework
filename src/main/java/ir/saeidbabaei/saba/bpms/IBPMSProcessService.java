@@ -12,16 +12,32 @@ import ir.saeidbabaei.saba.bpms.model.TaskRef;
  *
  */
 public interface IBPMSProcessService {
+
+	
+    //================================================================================
+    //Users, Groups and Membership region
+	//================================================================================
 	
 	
-	/**Add BMPS user
+	/**Add BMPS user.
 	 * 
 	 * @param user	User
 	 * @return		User
 	 */
 	public User addbpmsuser(User user);
 	
-    /**Add BMPS user to group
+	
+    /**Add BMPS groups.
+     * 
+     * @param groupid	Group id
+     * @param groupname	Group name
+     * @param grouptype Group type
+     * @return			True or False
+     */
+    public boolean addbpmsgroup(String groupid, String groupname, String grouptype);
+    
+    
+    /**Add BMPS user to group.
      * 	
      * @param groupid   Group name
      * @param username  User name
@@ -29,6 +45,12 @@ public interface IBPMSProcessService {
      */
     public boolean addbpmsusertogroup(String groupid, String username);
 	
+    
+    //================================================================================
+    //Process region
+	//================================================================================
+    
+    
 	/**
 	 * Gets Process name and process variables. <br/>
 	 * Returns Process instance id. 
@@ -38,6 +60,12 @@ public interface IBPMSProcessService {
 	 * @return      Process instance id
 	 */
 	public String startprocessbyname(Map<String, Object> vars, String name);
+	
+	
+    //================================================================================
+    //Task region
+	//================================================================================
+	
 	
 	/**
 	 * Get active task by group. <br/>
@@ -49,7 +77,36 @@ public interface IBPMSProcessService {
 	 */
 	public List<TaskRef> getactivetasksbygroup(String name);
 	
-	/**Claim task by user
+	
+    /**Get task list of assignee by group<br/>
+	 * High priority tasks first and is sorted by create time. <br/>
+     * 
+     * @param  assignee 	User name of assignee
+     * @param  groupname 	Group name
+     * @return		   		List of tasks
+     */
+    public List<TaskRef> getactivetasksbyassigneeandgroup(String assignee, String groupname);
+    
+    
+    /**Get a task by id and assignee.
+     * 
+     * @param taskid	Task id
+     * @param assignee  User name of assignee
+     * @return			Task
+     */
+    public TaskRef gettaskbyidandassignee(String taskid, String assignee);
+    
+    
+    /**Get Process variables by task id and assignee.
+     * 
+     * @param taskid	Task id
+     * @param assignee	Assignee
+     * @return			Process variables
+     */
+    public Map<String, Object> getprocessvarsbytaskidandassignee(String taskid, String assignee);
+    
+    
+	/**Claim task by user.
 	 * 
 	 * @param  taskid   Task id
 	 * @param  username User name
@@ -57,7 +114,8 @@ public interface IBPMSProcessService {
 	 */
 	public TaskRef claimtaskbyuser(String taskid, String username);
 	
-	/**Complete task by user
+	
+	/**Complete task by user.
 	 * 
 	 * @param  taskid   Task id
 	 * @param  vars 	Variables that you should pass the task

@@ -9,6 +9,7 @@ import javax.persistence.EntityNotFoundException;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -36,6 +37,7 @@ public class BPMSProcessService implements IBPMSProcessService {
     @Autowired 
     private IdentityService identityService;
     
+   
     
     //================================================================================
     //Users, Groups and Membership region
@@ -49,6 +51,18 @@ public class BPMSProcessService implements IBPMSProcessService {
 	    identityService.saveUser(actuser);
 
         return user;
+
+    }
+    
+    @Override
+    public boolean addbpmsgroup(String groupid, String groupname, String grouptype) {
+		  
+        Group group = identityService.newGroup(groupid);
+        group.setName(groupname);
+        group.setType(grouptype);
+        identityService.saveGroup(group);
+
+        return true;
 
     }
     
@@ -103,6 +117,60 @@ public class BPMSProcessService implements IBPMSProcessService {
         });
         
         return customTaskList;     	
+
+	}
+    
+    @Override
+    public List<TaskRef> getactivetasksbyassigneeandgroup(String assignee, String groupname) { 
+    	
+    	//There is no way in activiti 6 that you can get tasks with assignee and group name
+    	//When assignee claim a task, activiti delete the group of task
+    	//I will create a native query to handle the issue later
+		List<Task> tasks = taskService.createTaskQuery()
+				.taskAssignee(assignee)
+				.active()
+                .orderByTaskPriority().asc()
+                .orderByTaskCreateTime().asc()
+				.list();
+        
+        List<TaskRef> customTaskList= new ArrayList<TaskRef>();
+        
+        tasks.forEach(taskitem -> {
+        	       	
+        	customTaskList.add(
+        			new TaskRef(taskitem.getId(),taskitem.getName(),taskitem.getAssignee(),taskitem.getCategory(),
+        						taskitem.getClaimTime(),taskitem.getCreateTime(),taskitem.getDescription(),
+        						taskitem.getDueDate(),taskitem.getPriority(),taskitem.getProcessDefinitionId()));
+        });
+        
+        return customTaskList; 
+
+	}
+    
+    @Override
+    public TaskRef gettaskbyidandassignee(String taskid, String assignee) {
+	
+		Task taskitem = taskService.createTaskQuery()
+				.taskAssignee(assignee)
+				.taskId(taskid)
+				.singleResult();
+     
+        return new TaskRef(taskitem.getId(),taskitem.getName(),taskitem.getAssignee(),taskitem.getCategory(),
+        				   taskitem.getClaimTime(),taskitem.getCreateTime(),taskitem.getDescription(),
+        				   taskitem.getDueDate(),taskitem.getPriority(),taskitem.getProcessDefinitionId());	
+
+	}
+    
+    @Override
+    public Map<String, Object> getprocessvarsbytaskidandassignee(String taskid, String assignee) {
+	
+    	Map<String, Object> processvars = taskService.createTaskQuery()
+				.taskAssignee(assignee)
+				.taskId(taskid)
+				.includeProcessVariables()
+				.singleResult().getProcessVariables();
+     
+        return processvars;	
 
 	}
     
