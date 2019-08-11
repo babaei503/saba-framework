@@ -25,6 +25,9 @@ We're sorry to inform you that your recent application has been rejected. We hav
 Regards,
 My Corp]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[babaei503@gmail.com]]></activiti:string>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <subProcess id="sid-304989D1-D3EC-4F89-A288-2238C7941973" name="subProcess">
@@ -57,16 +60,13 @@ My Corp]]></activiti:expression>
     <boundaryEvent id="sid-BE9CDC49-2ED2-4FEF-A7DC-564EFA71A4DE" name="applicant cancels" attachedToRef="sid-304989D1-D3EC-4F89-A288-2238C7941973" cancelActivity="true">
       <signalEventDefinition signalRef="cancelApplication"></signalEventDefinition>
     </boundaryEvent>
-    <exclusiveGateway id="sid-3D63E564-D35A-42E3-A81E-6D7DF325D118" default="sid-014FAF0B-EBA1-411B-AF4F-CC7EA848FF89"></exclusiveGateway>
+    <exclusiveGateway id="sid-3D63E564-D35A-42E3-A81E-6D7DF325D118"></exclusiveGateway>
     <sequenceFlow id="sid-73AC3A3C-D128-4664-BC6C-7AF08FEDC8CA" sourceRef="sid-304989D1-D3EC-4F89-A288-2238C7941973" targetRef="sid-3D63E564-D35A-42E3-A81E-6D7DF325D118"></sequenceFlow>
     <endEvent id="sid-088F6DA0-EA68-4A29-9BC3-76B9D5C5E2E0" name="rejected"></endEvent>
     <serviceTask id="sid-F2ADA953-6FCF-42FA-B59E-45DAC6EACFA7" name="Send welcome mail" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${applicant.email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:expression><![CDATA[test@activiti.org]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Your application has been accepted!]]></activiti:string>
@@ -79,15 +79,42 @@ We're happy to inform you that your recent application has been accepted.  We wi
 Regards,
 My Corp]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[babaei503@gmail.com]]></activiti:string>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <endEvent id="sid-76F28F61-0B2A-41BA-8A71-5E4C9C7828E4" name="accepted"></endEvent>
     <sequenceFlow id="sid-B950EB17-8AE6-4F23-8888-FDCEE4797A21" sourceRef="sid-F2ADA953-6FCF-42FA-B59E-45DAC6EACFA7" targetRef="sid-76F28F61-0B2A-41BA-8A71-5E4C9C7828E4"></sequenceFlow>
-    <sequenceFlow id="sid-014FAF0B-EBA1-411B-AF4F-CC7EA848FF89" sourceRef="sid-3D63E564-D35A-42E3-A81E-6D7DF325D118" targetRef="sid-088F6DA0-EA68-4A29-9BC3-76B9D5C5E2E0"></sequenceFlow>
     <sequenceFlow id="sid-59B08F72-9D7C-4CD5-A850-14E10328FD7B" sourceRef="sid-3D63E564-D35A-42E3-A81E-6D7DF325D118" targetRef="sid-F2ADA953-6FCF-42FA-B59E-45DAC6EACFA7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${techOk && financialOk}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow1" sourceRef="sid-E0DD2D8E-0672-4BE0-97A4-933DD8771EFF" targetRef="sid-42BAE58A-8FFB-4B02-AAED-E0D8EA5A7E39"></sequenceFlow>
+    <serviceTask id="sid-F2ADA953-6FCF-42FA-B59C-45AAC6EACDA6" name="Send rejection email" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${applicant.email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Your application has been rejected]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="html">
+          <activiti:expression><![CDATA[Dear ${applicant.name},
+
+We're sorry to inform you that your recent application has been rejected. We have stored your information in our data systems and will contact you if in the future a potential matching application is posted on our website.
+
+Regards,
+My Corp]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[babaei503@gmail.com]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-77AA3A3C-D128-4664-BC6C-7AC08FEED8CB" sourceRef="sid-3D63E564-D35A-42E3-A81E-6D7DF325D118" targetRef="sid-F2ADA953-6FCF-42FA-B59C-45AAC6EACDA6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${techOk==false || financialOk==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-C950DB17-8AA6-4F23-8284-FDCED4797C24" sourceRef="sid-F2ADA953-6FCF-42FA-B59C-45AAC6EACDA6" targetRef="sid-088F6DA0-EA68-4A29-9BC3-76B9D5C5E2E0"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_hireProcessWithJpa">
     <bpmndi:BPMNPlane bpmnElement="hireProcessWithJpa" id="BPMNPlane_hireProcessWithJpa">
@@ -137,13 +164,16 @@ My Corp]]></activiti:expression>
         <omgdc:Bounds height="40.0" width="40.0" x="1062.0" y="255.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-088F6DA0-EA68-4A29-9BC3-76B9D5C5E2E0" id="BPMNShape_sid-088F6DA0-EA68-4A29-9BC3-76B9D5C5E2E0">
-        <omgdc:Bounds height="35.0" width="35.0" x="1180.0" y="261.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1304.0" y="382.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-F2ADA953-6FCF-42FA-B59E-45DAC6EACFA7" id="BPMNShape_sid-F2ADA953-6FCF-42FA-B59E-45DAC6EACFA7">
-        <omgdc:Bounds height="80.0" width="100.0" x="1035.0" y="105.0"></omgdc:Bounds>
+        <omgdc:Bounds height="80.0" width="100.0" x="1140.0" y="128.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-76F28F61-0B2A-41BA-8A71-5E4C9C7828E4" id="BPMNShape_sid-76F28F61-0B2A-41BA-8A71-5E4C9C7828E4">
-        <omgdc:Bounds height="35.0" width="35.0" x="1180.0" y="131.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1290.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-F2ADA953-6FCF-42FA-B59C-45AAC6EACDA6" id="BPMNShape_sid-F2ADA953-6FCF-42FA-B59C-45AAC6EACDA6">
+        <omgdc:Bounds height="71.0" width="116.0" x="1140.0" y="364.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-B468226B-DB2E-421E-B04B-5FF1622F3E78" id="BPMNEdge_sid-B468226B-DB2E-421E-B04B-5FF1622F3E78">
         <omgdi:waypoint x="420.0" y="225.0"></omgdi:waypoint>
@@ -201,20 +231,26 @@ My Corp]]></activiti:expression>
         <omgdi:waypoint x="1062.0" y="275.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-B950EB17-8AE6-4F23-8888-FDCEE4797A21" id="BPMNEdge_sid-B950EB17-8AE6-4F23-8888-FDCEE4797A21">
-        <omgdi:waypoint x="1135.0" y="145.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1180.0" y="148.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="sid-014FAF0B-EBA1-411B-AF4F-CC7EA848FF89" id="BPMNEdge_sid-014FAF0B-EBA1-411B-AF4F-CC7EA848FF89">
-        <omgdi:waypoint x="1102.0" y="275.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1180.0" y="278.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1240.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-59B08F72-9D7C-4CD5-A850-14E10328FD7B" id="BPMNEdge_sid-59B08F72-9D7C-4CD5-A850-14E10328FD7B">
         <omgdi:waypoint x="1082.0" y="255.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1085.0" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1082.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1140.0" y="168.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="245.0" y="224.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="225.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-77AA3A3C-D128-4664-BC6C-7AC08FEED8CB" id="BPMNEdge_sid-77AA3A3C-D128-4664-BC6C-7AC08FEED8CB">
+        <omgdi:waypoint x="1082.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1082.0" y="398.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1140.0" y="399.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-C950DB17-8AA6-4F23-8284-FDCED4797C24" id="BPMNEdge_sid-C950DB17-8AA6-4F23-8284-FDCED4797C24">
+        <omgdi:waypoint x="1256.0" y="399.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1304.0" y="399.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

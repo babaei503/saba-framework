@@ -38,7 +38,7 @@ CREATE TABLE `applicanthireinfo` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `applicantid_UNIQUE` (`applicantid`),
   CONSTRAINT `fk_hire_applicant` FOREIGN KEY (`applicantid`) REFERENCES `applicant` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,6 +47,7 @@ CREATE TABLE `applicanthireinfo` (
 
 LOCK TABLES `applicanthireinfo` WRITE;
 /*!40000 ALTER TABLE `applicanthireinfo` DISABLE KEYS */;
+INSERT INTO `applicanthireinfo` VALUES (1,38,1,'I accept with hiring Sarah Hakkak as Java Developer.',0,NULL,0,NULL,NULL,NULL,NULL,NULL),(5,36,1,'Accepted',1,'Technical is ok.',0,NULL,NULL,NULL,NULL,NULL),(9,39,1,'ok hiring.',0,NULL,0,NULL,NULL,NULL,NULL,NULL),(10,40,1,'I accept applicant.',1,'We Accept.',0,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `applicanthireinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-09 23:32:25
+-- Dump completed on 2019-08-11 17:47:07

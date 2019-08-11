@@ -50,7 +50,7 @@ CREATE TABLE `act_hi_varinst` (
 
 LOCK TABLES `act_hi_varinst` WRITE;
 /*!40000 ALTER TABLE `act_hi_varinst` DISABLE KEYS */;
-INSERT INTO `act_hi_varinst` VALUES ('90006','90005','90005',NULL,'applicant','jpa-entity',0,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','36','2019-08-06 00:47:15.171','2019-08-06 00:47:15.171'),('95002','95001','95001',NULL,'applicant','jpa-entity',0,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','37','2019-08-07 00:59:14.507','2019-08-07 00:59:14.507'),('97502','97501','97501',NULL,'applicant','jpa-entity',0,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','38','2019-08-07 10:50:01.226','2019-08-07 10:50:01.226');
+INSERT INTO `act_hi_varinst` VALUES ('102502','102501','102501',NULL,'applicant','jpa-entity',0,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','39','2019-08-10 16:47:33.444','2019-08-10 16:47:33.444'),('102508','97501','97501',NULL,'telephoneInterviewOutcome','boolean',0,NULL,NULL,1,NULL,NULL,'2019-08-10 16:50:54.779','2019-08-10 16:50:54.779'),('105005','90005','90005',NULL,'telephoneInterviewOutcome','boolean',0,NULL,NULL,1,NULL,NULL,'2019-08-10 17:00:53.912','2019-08-10 17:00:53.912'),('107501','102501','102501',NULL,'telephoneInterviewOutcome','boolean',0,NULL,NULL,1,NULL,NULL,'2019-08-10 17:09:18.035','2019-08-10 17:09:18.035'),('110003','90005','90005',NULL,'techOk','boolean',0,NULL,NULL,1,NULL,NULL,'2019-08-11 10:22:37.964','2019-08-11 10:22:37.964'),('122506','122505','122505',NULL,'applicant','jpa-entity',0,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','40','2019-08-11 14:48:45.048','2019-08-11 14:48:45.048'),('122513','122505','122505',NULL,'telephoneInterviewOutcome','boolean',0,NULL,NULL,1,NULL,NULL,'2019-08-11 14:56:22.700','2019-08-11 14:56:22.700'),('125005','122505','122505',NULL,'techOk','boolean',0,NULL,NULL,1,NULL,NULL,'2019-08-11 15:00:50.672','2019-08-11 15:00:50.672'),('90006','90005','90005',NULL,'applicant','jpa-entity',0,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','36','2019-08-06 00:47:15.171','2019-08-06 00:47:15.171'),('95002','95001','95001',NULL,'applicant','jpa-entity',0,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','37','2019-08-07 00:59:14.507','2019-08-07 00:59:14.507'),('97502','97501','97501',NULL,'applicant','jpa-entity',0,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','38','2019-08-07 10:50:01.226','2019-08-07 10:50:01.226');
 /*!40000 ALTER TABLE `act_hi_varinst` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -63,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-09 23:32:41
+-- Dump completed on 2019-08-11 17:47:10

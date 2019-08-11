@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant;
@@ -16,7 +17,7 @@ import ir.saeidbabaei.saba.applicanthireprocess.entity.Job;
 import ir.saeidbabaei.saba.applicanthireprocess.service.IApplicantService;
 import ir.saeidbabaei.saba.applicanthireprocess.service.IApplicanthireinfoService;
 import ir.saeidbabaei.saba.applicanthireprocess.service.IJobService;
-import ir.saeidbabaei.saba.bpms.IBPMSProcessService;
+import ir.saeidbabaei.saba.bpms.service.IBPMSProcessService;
 import ir.saeidbabaei.saba.bpms.model.TaskRef;
 
 import java.util.Collections;
@@ -61,6 +62,7 @@ public class ApplicantHireProcessController {
      * @return 			 Response 200 OK. Applicant info.
      */
     @ResponseStatus(value = HttpStatus.OK)
+	@Transactional
     @RequestMapping(value = "/start-applicant-hire-process", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Applicant> startApplicantHireProcess(@RequestBody Applicant applicant) {
@@ -359,6 +361,7 @@ public class ApplicantHireProcessController {
 	 * @return 	  					Task.
 	 */
 	@PreAuthorize("hasRole('TELEPHONE')")
+	@Transactional
     @ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/complete-phoneinterview-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -381,6 +384,7 @@ public class ApplicantHireProcessController {
 	 * @return 	  					Task.
 	 */
 	@PreAuthorize("hasRole('TECH')")
+	@Transactional
     @ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/complete-techinterview-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -412,6 +416,7 @@ public class ApplicantHireProcessController {
 	 * @return 	  					Task.
 	 */
 	@PreAuthorize("hasRole('FINANCE')")
+	@Transactional
     @ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/complete-financenegotiation-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

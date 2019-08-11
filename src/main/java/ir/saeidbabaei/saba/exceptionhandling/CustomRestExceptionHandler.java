@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+
+import org.activiti.engine.ActivitiException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -221,6 +223,22 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         //
         final ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "Error occurred on server side");
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+    
+    //================================================================================
+    //BPMS Exceptions
+    //================================================================================
+    
+    @ExceptionHandler(ActivitiException.class)
+    public final Object handleActivitiException(ActivitiException ex, final WebRequest request) {
+        logger.info(ex.getClass().getName());
+        //
+        final String error = ex.getMessage();
+
+        final ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), error);
+
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        
     }
 
 }

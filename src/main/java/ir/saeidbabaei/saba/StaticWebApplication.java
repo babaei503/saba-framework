@@ -1,10 +1,11 @@
 package ir.saeidbabaei.saba;
 
-//import org.springframework.beans.factory.InitializingBean;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+//import org.springframework.beans.factory.InitializingBean;
 //import org.springframework.context.annotation.Bean;
 //import org.activiti.engine.IdentityService;
 //import org.activiti.engine.identity.Group;
@@ -13,15 +14,19 @@ import org.activiti.spring.boot.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class StaticWebApplication extends SpringBootServletInitializer {
-
+	
+	
     public static void main(String[] args) throws Exception {
         SpringApplication.run(StaticWebApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    	
         return application.sources(getClass());
     }
+    
+    
 
       //***********In the next step use LDAP and Active Directory for both spring boot and BPMS users ***********
       //Insert Activiti user,group,membership

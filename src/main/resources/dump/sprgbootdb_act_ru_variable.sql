@@ -52,7 +52,7 @@ CREATE TABLE `act_ru_variable` (
 
 LOCK TABLES `act_ru_variable` WRITE;
 /*!40000 ALTER TABLE `act_ru_variable` DISABLE KEYS */;
-INSERT INTO `act_ru_variable` VALUES ('90006',1,'jpa-entity','applicant','90005','90005',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','36'),('95002',1,'jpa-entity','applicant','95001','95001',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','37'),('97502',1,'jpa-entity','applicant','97501','97501',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','38');
+INSERT INTO `act_ru_variable` VALUES ('102502',1,'jpa-entity','applicant','102501','102501',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','39'),('102508',1,'boolean','telephoneInterviewOutcome','97501','97501',NULL,NULL,NULL,1,NULL,NULL),('105005',1,'boolean','telephoneInterviewOutcome','90005','90005',NULL,NULL,NULL,1,NULL,NULL),('107501',1,'boolean','telephoneInterviewOutcome','102501','102501',NULL,NULL,NULL,1,NULL,NULL),('110003',1,'boolean','techOk','90005','90005',NULL,NULL,NULL,1,NULL,NULL),('122506',1,'jpa-entity','applicant','122505','122505',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','40'),('122513',1,'boolean','telephoneInterviewOutcome','122505','122505',NULL,NULL,NULL,1,NULL,NULL),('125005',1,'boolean','techOk','122505','122505',NULL,NULL,NULL,1,NULL,NULL),('90006',1,'jpa-entity','applicant','90005','90005',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','36'),('95002',1,'jpa-entity','applicant','95001','95001',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','37'),('97502',1,'jpa-entity','applicant','97501','97501',NULL,NULL,NULL,NULL,'ir.saeidbabaei.saba.applicanthireprocess.entity.Applicant','38');
 /*!40000 ALTER TABLE `act_ru_variable` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -65,4 +65,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-09 23:32:32
+-- Dump completed on 2019-08-11 17:47:08

@@ -36,7 +36,7 @@ CREATE TABLE `applicant` (
   UNIQUE KEY `email_UNIQUE` (`email`,`jobid`),
   KEY `id_idx` (`jobid`),
   CONSTRAINT `jobid` FOREIGN KEY (`jobid`) REFERENCES `jobs` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `applicant` (
 
 LOCK TABLES `applicant` WRITE;
 /*!40000 ALTER TABLE `applicant` DISABLE KEYS */;
-INSERT INTO `applicant` VALUES (17,'babaei@gmail.com','Saeid','09132376508',2,NULL,NULL,NULL,NULL),(22,'rad@gmail.com','Sasan','09145556666',3,NULL,NULL,NULL,NULL),(23,'ahmadi@gmail.com','Reza','09789996666',1,NULL,NULL,NULL,NULL),(25,'alavi@gmail.com','Ali','09132224445',2,NULL,NULL,NULL,NULL),(26,'ahmad@gmail.com','Ahmad','09132378888',1,NULL,NULL,NULL,NULL),(29,'jack@gmail.com','Jack','09172225566',3,NULL,NULL,NULL,NULL),(33,'reza@gmail.com','reza','09139999999',1,NULL,NULL,NULL,NULL),(34,'ahmadi@yahoo.com','ahmad','09124444444',3,NULL,NULL,NULL,NULL),(35,'sasan@gmail.com','sasan','',1,NULL,NULL,NULL,NULL),(36,'babaei503@gmail.com','Saeid Babaei','09132376508',3,NULL,NULL,NULL,NULL),(37,'sasanrad@gmail.com','Sasan Rad','09124444444',1,NULL,NULL,NULL,NULL),(38,'Sarah.h@gmail.com','Sarah Hakkak','09135555555',2,NULL,NULL,NULL,NULL);
+INSERT INTO `applicant` VALUES (36,'babaei503@gmail.com','Saeid Babaei','09132376508',3,NULL,NULL,NULL,NULL),(37,'sasan_rad@gmail.com','Sasan Rad','09124444444',1,NULL,NULL,NULL,NULL),(38,'Sarah.h@gmail.com','Sarah Hakkak','09135555555',2,NULL,NULL,NULL,NULL),(39,'Arash34@gmail.com','Arash Rad','09189999666',3,NULL,NULL,NULL,NULL),(40,'babaei503@yahoo.com','Saeid Babaei','09132376508',1,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `applicant` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -58,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-09 23:32:37
+-- Dump completed on 2019-08-11 17:47:09

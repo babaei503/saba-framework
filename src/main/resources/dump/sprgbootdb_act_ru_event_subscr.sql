@@ -47,6 +47,7 @@ CREATE TABLE `act_ru_event_subscr` (
 
 LOCK TABLES `act_ru_event_subscr` WRITE;
 /*!40000 ALTER TABLE `act_ru_event_subscr` DISABLE KEYS */;
+INSERT INTO `act_ru_event_subscr` VALUES ('102513',1,'signal','cancelApplication','102512','97501','sid-BE9CDC49-2ED2-4FEF-A7DC-564EFA71A4DE',NULL,'2019-08-10 12:20:54.831','hireProcessWithJpa:2:90004',''),('105010',1,'signal','cancelApplication','105009','90005','sid-BE9CDC49-2ED2-4FEF-A7DC-564EFA71A4DE',NULL,'2019-08-10 12:30:54.232','hireProcessWithJpa:2:90004',''),('107506',1,'signal','cancelApplication','107505','102501','sid-BE9CDC49-2ED2-4FEF-A7DC-564EFA71A4DE',NULL,'2019-08-10 12:39:18.448','hireProcessWithJpa:3:100004',''),('122518',1,'signal','cancelApplication','122517','122505','sid-BE9CDC49-2ED2-4FEF-A7DC-564EFA71A4DE',NULL,'2019-08-11 10:26:22.713','hireProcessWithJpa:4:122504','');
 /*!40000 ALTER TABLE `act_ru_event_subscr` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-09 23:32:21
+-- Dump completed on 2019-08-11 17:47:06

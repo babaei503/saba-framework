@@ -49,7 +49,7 @@ CREATE TABLE `act_ru_identitylink` (
 
 LOCK TABLES `act_ru_identitylink` WRITE;
 /*!40000 ALTER TABLE `act_ru_identitylink` DISABLE KEYS */;
-INSERT INTO `act_ru_identitylink` VALUES ('90011',1,'TELEPHONE','candidate',NULL,'90010',NULL,NULL),('92501',1,NULL,'participant','telephone1',NULL,'90005',NULL),('95007',1,'TELEPHONE','candidate',NULL,'95006',NULL,NULL),('97507',1,'TELEPHONE','candidate',NULL,'97506',NULL,NULL),('97508',1,NULL,'participant','telephone1',NULL,'97501',NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('102520',1,'TECH','candidate',NULL,'102519',NULL,NULL),('102523',1,'FINANCE','candidate',NULL,'102522',NULL,NULL),('105001',1,NULL,'participant','telephone1',NULL,'102501',NULL),('105020',1,'FINANCE','candidate',NULL,'105019',NULL,NULL),('107513',1,'TECH','candidate',NULL,'107512',NULL,NULL),('107516',1,'FINANCE','candidate',NULL,'107515',NULL,NULL),('110001',1,NULL,'participant','finance1',NULL,'90005',NULL),('110002',1,NULL,'participant','tech1',NULL,'90005',NULL),('122512',1,NULL,'participant','telephone1',NULL,'122505',NULL),('122528',1,'FINANCE','candidate',NULL,'122527',NULL,NULL),('122529',1,NULL,'participant','tech1',NULL,'122505',NULL),('125007',1,NULL,'participant','finance1',NULL,'122505',NULL),('92501',1,NULL,'participant','telephone1',NULL,'90005',NULL),('95007',1,'TELEPHONE','candidate',NULL,'95006',NULL,NULL),('97508',1,NULL,'participant','telephone1',NULL,'97501',NULL);
 /*!40000 ALTER TABLE `act_ru_identitylink` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-09 23:32:42
+-- Dump completed on 2019-08-11 17:47:11
