@@ -221,11 +221,59 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('TELEPHONE')")
 	@GetMapping("/get-active-phoneinterviewtasks-assignee")
-    public List<TaskRef> getactivepitasksbyassignee() {
+    public List<TaskRef> getactivephninttasksbyassignee() {
 				       
 		return bpmsprocessservice.getactivetasksbyassigneeandgroup(getusername(), "TELEPHONE");
 		
 	}	
+	
+	/**Get active technical interview tasks.
+	 * 
+	 * @return List of tasks.
+	 */
+	@PreAuthorize("hasRole('TECH')")
+	@GetMapping("/get-active-techinterview-tasks")
+    public List<TaskRef> getactivetechinterviewtasks() {
+				       
+		return bpmsprocessservice.getactivetasksbygroup("TECH");
+		
+	}
+	
+	/**Get active technical interview tasks by assignee.
+	 * 
+	 * @return 	List of tasks.
+	 */
+	@PreAuthorize("hasRole('TECH')")
+	@GetMapping("/get-active-techinterviewtasks-assignee")
+    public List<TaskRef> getactivetechinttasksbyassignee() {
+				       
+		return bpmsprocessservice.getactivetasksbyassigneeandgroup(getusername(), "TECH");
+		
+	}	
+	
+	/**Get active financial negotiation tasks.
+	 * 
+	 * @return List of tasks.
+	 */
+	@PreAuthorize("hasRole('FINANCE')")
+	@GetMapping("/get-active-financenegotiation-tasks")
+    public List<TaskRef> getactivefinancnegottasks() {
+				       
+		return bpmsprocessservice.getactivetasksbygroup("FINANCE");
+		
+	}
+	
+	/**Get active financial negotiation tasks by assignee.
+	 * 
+	 * @return 	List of tasks.
+	 */
+	@PreAuthorize("hasRole('FINANCE')")
+	@GetMapping("/get-active-financenegottasks-assignee")
+    public List<TaskRef> getactivefinancnegottasksbyassignee() {
+				       
+		return bpmsprocessservice.getactivetasksbyassigneeandgroup(getusername(), "FINANCE");
+		
+	}
 	
 	/**Get phone interview task by id and assignee.
 	 * 
@@ -285,7 +333,7 @@ public class ApplicantHireProcessController {
 		
 	}
 	
-	/**Claim Finance negotiation task by user.
+	/**Claim Financial negotiation task by user.
 	 * 
 	 * @param   taskid   Task id.
 	 * @return           Task.
@@ -314,7 +362,7 @@ public class ApplicantHireProcessController {
     @ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/complete-phoneinterview-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public TaskRef completephoneinterviewtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+    public boolean completephoneinterviewtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
 		
     	//Save applicant hire info
         applicanthireinfoservice.save(applicanthireinfo);
@@ -336,7 +384,7 @@ public class ApplicantHireProcessController {
     @ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/complete-techinterview-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public TaskRef completetechinterviewtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+    public boolean completetechinterviewtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
 		
 		//Find applicant hire info
 		Applicanthireinfo aphinfo = applicanthireinfoservice.findApplicanthireinfoByApplicant(applicanthireinfo.getApplicant());
@@ -365,9 +413,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('FINANCE')")
     @ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/complete-financialnegotiation-task/{taskid}", method = RequestMethod.POST,
+	@RequestMapping(value = "/complete-financenegotiation-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public TaskRef completefinancialnegotiationtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+    public boolean completefinancialnegotiationtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
 		
 		//Find applicant hire info
 		Applicanthireinfo aphinfo = applicanthireinfoservice.findApplicanthireinfoByApplicant(applicanthireinfo.getApplicant());

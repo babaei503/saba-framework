@@ -119,9 +119,9 @@ public interface IBPMSProcessService {
 	 * 
 	 * @param  taskid   Task id
 	 * @param  vars 	Variables that you should pass the task
-	 * @return 			Task
+	 * @return 			True if task complete successful
 	 */
-    public TaskRef completetaskbyid(String taskid, Map<String, Object> vars);
+    public boolean completetaskbyid(String taskid, Map<String, Object> vars);
 	
 }
 

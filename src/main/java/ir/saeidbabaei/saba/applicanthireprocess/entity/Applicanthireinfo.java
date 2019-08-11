@@ -27,15 +27,15 @@ public class Applicanthireinfo  {
 	@JoinColumn(name="applicantid")
 	private Applicant applicant;
 	
-	private byte telintviwres;
+	private boolean telintviwres;
 	
 	private String telintviwdesc;
 	
-	private byte techintviwres;
+	private boolean techintviwres;
 	
 	private String techintviwdesc;
 
-	private byte finnegotres;
+	private boolean finnegotres;
 
 	private String finnegotdesc;
 
@@ -60,8 +60,8 @@ public class Applicanthireinfo  {
 	 * @param finnegotres		Is finance negotiation OK
 	 * @param finnegotdesc		Description of finance negotiation
 	 */
-	public Applicanthireinfo(Applicant applicant, byte telintviwres, String telintviwdesc,
-			byte techintviwres, String techintviwdesc, byte finnegotres,
+	public Applicanthireinfo(Applicant applicant, boolean telintviwres, String telintviwdesc,
+			boolean techintviwres, String techintviwdesc, boolean finnegotres,
 			String finnegotdesc) {
 		super();
 		this.applicant = applicant;
@@ -107,14 +107,14 @@ public class Applicanthireinfo  {
 	/**
 	 * @return the telintviwres
 	 */
-	public byte getTelintviwres() {
+	public boolean getTelintviwres() {
 		return telintviwres;
 	}
 
 	/**
 	 * @param telintviwres the telintviwres to set
 	 */
-	public void setTelintviwres(byte telintviwres) {
+	public void setTelintviwres(boolean telintviwres) {
 		this.telintviwres = telintviwres;
 	}
 
@@ -135,14 +135,14 @@ public class Applicanthireinfo  {
 	/**
 	 * @return the techintviwres
 	 */
-	public byte getTechintviwres() {
+	public boolean getTechintviwres() {
 		return techintviwres;
 	}
 
 	/**
 	 * @param techintviwres the techintviwres to set
 	 */
-	public void setTechintviwres(byte techintviwres) {
+	public void setTechintviwres(boolean techintviwres) {
 		this.techintviwres = techintviwres;
 	}
 
@@ -163,14 +163,14 @@ public class Applicanthireinfo  {
 	/**
 	 * @return the finnegotres
 	 */
-	public byte getFinnegotres() {
+	public boolean getFinnegotres() {
 		return finnegotres;
 	}
 
 	/**
 	 * @param finnegotres the finnegotres to set
 	 */
-	public void setFinnegotres(byte finnegotres) {
+	public void setFinnegotres(boolean finnegotres) {
 		this.finnegotres = finnegotres;
 	}
 

@@ -191,16 +191,11 @@ public class BPMSProcessService implements IBPMSProcessService {
 	
 
     @Override
-    public TaskRef completetaskbyid(String taskid, Map<String, Object> vars) {
+    public boolean completetaskbyid(String taskid, Map<String, Object> vars) {
 
 		taskService.complete(taskid,vars);
-		
-		Task taskitem = taskService.createTaskQuery()
-				.taskId(taskid).singleResult();
      
-        return new TaskRef(taskitem.getId(),taskitem.getName(),taskitem.getAssignee(),taskitem.getCategory(),
-				   taskitem.getClaimTime(),taskitem.getCreateTime(),taskitem.getDescription(),
-				   taskitem.getDueDate(),taskitem.getPriority(),taskitem.getProcessDefinitionId());	
+        return true;
 
 	}
 	
