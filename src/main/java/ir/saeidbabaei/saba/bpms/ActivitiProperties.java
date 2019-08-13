@@ -1,6 +1,7 @@
 package ir.saeidbabaei.saba.bpms;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 
 /**Activiti properties for configure mail server
@@ -8,46 +9,23 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  */
 @ConfigurationProperties("spring.activiti")
+@Component
 public class ActivitiProperties {
 
 	
-	
-//	@Autowired
-//	org.activiti.spring.boot.ActivitiProperties activitiproperties;
-//	
-//    //Configure Activiti mail server
-//    @Bean
-//    InitializingBean MailServerInitializer() {
-//
-//        return new InitializingBean() {
-//        	public void afterPropertiesSet() throws Exception {
-//
-//        		activitiproperties.setMailServerHost("smtp.gmail.com");
-//        		activitiproperties.setMailServerPort(587);
-//        		activitiproperties.setMailServerUserName("babaei503@gmail.com");
-//        		activitiproperties.setMailServerPassword("*******");
-//        		activitiproperties.setMailServerDefaultFrom("babaei503@gmail.com");
-//        		activitiproperties.setMailServerUseSsl(false);
-//        		activitiproperties.setMailServerUseTls(true);
-//        		
-//        	}
-//        };
-//    }
-	
-	
-	
 	/**The host name of your mail server (e.g. mail.mycorp.com).<br/>
-	 * Default is localhost
+	 *Default is localhost.<br/>
+	 *For Gmail be sure to set "Less secure app access" to off in account setting.
 	 * 
 	 */
 	private String mailServerHost = "smtp.gmail.com";
 	
 	/**The port for SMTP traffic on the mail server.<br/>
 	 *The default is 25<br/>
-	 *gmail: 587 for TLS and 465 for SSL.
+	 *Gmail: 587 for TLS and 465 for SSL.
 	 * 
 	 */
-	private int mailServerPort = 587;
+	private int mailServerPort = 465;
 	
 	/**Some mail servers require credentials for sending e-mail.<br/>
 	 * By default not set.
@@ -60,7 +38,7 @@ public class ActivitiProperties {
 	 * 
 	 */
 
-	private String mailServerPassword = "******";
+	private String mailServerPassword = "********";
 
 	
 	/**The default e-mail address of the sender of e-mails, when none is provided by the user.<br/>
@@ -73,13 +51,13 @@ public class ActivitiProperties {
 	 *By default set to false.
 	 * 
 	 */
-	private boolean mailServerUseSsl = false ;
+	private boolean mailServerUseSsl = true ;
 	
 	/**Some mail servers (for instance gmail) require TLS communication.</br>
 	 *By default set to false.
 	 * 
 	 */
-	private boolean mailServerUseTls = true;
+	private boolean mailServerUseTls = false;
 
 
 	public String getMailServerHost() {

@@ -122,6 +122,7 @@ public interface IBPMSProcessService {
 	 * @return 			True if task complete successful
 	 */
     public boolean completetaskbyid(String taskid, Map<String, Object> vars);
+    
 	
 }
 

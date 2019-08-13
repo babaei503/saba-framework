@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.persistence.EntityNotFoundException;
 
 import org.activiti.engine.IdentityService;
+import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.Group;
@@ -16,6 +17,7 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ir.saeidbabaei.saba.bpms.ActivitiProperties;
 import ir.saeidbabaei.saba.bpms.model.TaskRef;
 
 /**Activiti BPM System that implement IBPMSProcessService interface.
@@ -36,6 +38,12 @@ public class BPMSProcessService implements IBPMSProcessService {
     
     @Autowired 
     private IdentityService identityService;
+    
+    @Autowired
+    private SpringProcessEngineConfiguration springprocessengineconfiguration;
+    
+    @Autowired
+    private ActivitiProperties activitiproperties;
     
    
     
@@ -192,11 +200,31 @@ public class BPMSProcessService implements IBPMSProcessService {
 
     @Override
     public boolean completetaskbyid(String taskid, Map<String, Object> vars) {
-
+    	
+    	initmailserver();
+    	
 		taskService.complete(taskid,vars);
      
         return true;
 
 	}
+    
+    
+    //================================================================================
+    //Configuration region
+	//================================================================================
+    
+    
+    private void initmailserver()
+    {
+    	springprocessengineconfiguration.setMailServerHost(activitiproperties.getMailServerHost());
+    	springprocessengineconfiguration.setMailServerPort(activitiproperties.getMailServerPort());
+    	springprocessengineconfiguration.setMailServerUsername(activitiproperties.getMailServerUserName());
+    	springprocessengineconfiguration.setMailServerPassword(activitiproperties.getMailServerPassword());
+    	springprocessengineconfiguration.setMailServerDefaultFrom(activitiproperties.getMailServerDefaultFrom());
+    	springprocessengineconfiguration.setMailServerUseSSL(activitiproperties.isMailServerUseSsl());
+    	springprocessengineconfiguration.setMailServerUseTLS(activitiproperties.isMailServerUseTls());
+    	
+    }
 	
 }
