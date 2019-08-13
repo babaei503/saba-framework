@@ -59,7 +59,9 @@ public class ActivitiProperties {
 	 *By default not set.
 	 * 
 	 */
-	private String mailServerPassword = "*****";
+
+	private String mailServerPassword = "******";
+
 	
 	/**The default e-mail address of the sender of e-mails, when none is provided by the user.<br/>
 	 *By default this is activiti@activiti.org
