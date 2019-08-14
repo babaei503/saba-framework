@@ -1,5 +1,6 @@
 package ir.saeidbabaei.saba.bpms.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,15 +52,44 @@ public interface IBPMSProcessService {
 	//================================================================================
     
     
-	/**
-	 * Gets Process name and process variables. <br/>
-	 * Returns Process instance id. 
+	/**Gets Process name and process variables. <br/>
+	 * Returns Process instance id.
 	 *
 	 * @param  vars Variables that you should pass the process
 	 * @param  name Process name
 	 * @return      Process instance id
 	 */
 	public String startprocessbyname(Map<String, Object> vars, String name);
+
+	
+	/**Get list of unfinished process by name.
+	 *   
+	 * @param 	name		Process key
+	 * @param 	afterTime	Start date
+	 * @param 	beforeTime	End date
+	 * @return				List of process with process variables and count of process
+	 */
+	public List<Map<String, Object>> getprocesslistbyname(String name, Date afterTime, Date beforeTime);
+	
+	
+	/**Get list of finished process by name.
+	 *   
+	 * @param 	name		Process key
+	 * @param 	afterTime	Start date
+	 * @param 	beforeTime	End date
+	 * @return				List of process with process variables and count of process
+	 */
+	public List<Map<String, Object>> gethisprocesslistbyname(String name, Date afterTime, Date beforeTime);
+	
+	
+	/**Get list of finished and unfinished process by name.
+	 *   
+	 * @param 	name		Process key
+	 * @param 	afterTime	Start date
+	 * @param 	beforeTime	End date
+	 * @return				List of process with process variables and count of process
+	 */
+	public List<Map<String, Object>> getallprocesslistbyname(String name, Date afterTime, Date beforeTime);
 	
 	
     //================================================================================

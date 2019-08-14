@@ -1,15 +1,19 @@
 package ir.saeidbabaei.saba.bpms.service;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -38,6 +42,9 @@ public class BPMSProcessService implements IBPMSProcessService {
     
     @Autowired 
     private IdentityService identityService;
+    
+    @Autowired 
+    private HistoryService historyService;
     
     @Autowired
     private SpringProcessEngineConfiguration springprocessengineconfiguration;
@@ -99,6 +106,92 @@ public class BPMSProcessService implements IBPMSProcessService {
 		return processInstance.getId();
 
 	}
+    
+    
+    @Override
+    public List<Map<String, Object>> getprocesslistbyname(String name, Date afterTime, Date beforeTime) {
+
+	    List<HistoricProcessInstance> processInstance= historyService.createHistoricProcessInstanceQuery()
+	    		.processDefinitionKey(name)
+	    		.includeProcessVariables()
+	    		.startedAfter(afterTime)
+	    		.startedBefore(beforeTime)
+	    		.unfinished()
+	    		.orderByProcessInstanceStartTime()
+	    		.desc()
+	    		.list();
+	    
+	    List<Map<String, Object>> l = new ArrayList<Map<String, Object>>();
+	    
+	    
+	    processInstance.forEach(item -> {	
+
+    		Map<String,Object> datamap = new HashMap<String,Object>();
+    		datamap.put("processid", item.getId());
+    		datamap.put("data", item.getProcessVariables());
+    		l.add(datamap);
+    		
+	    });
+	    
+	    return l;
+	    
+	}
+    
+    @Override
+    public List<Map<String, Object>> gethisprocesslistbyname(String name, Date afterTime, Date beforeTime) {
+
+	    List<HistoricProcessInstance> processInstance= historyService.createHistoricProcessInstanceQuery()
+	    		.processDefinitionKey(name)
+	    		.includeProcessVariables()
+	    		.startedAfter(afterTime)
+	    		.startedBefore(beforeTime)
+	    		.finished()
+	    		.orderByProcessInstanceStartTime()
+	    		.desc()
+	    		.list();
+	    
+	    List<Map<String, Object>> l = new ArrayList<Map<String, Object>>();
+	    
+	    processInstance.forEach(item -> {
+	    	
+    		Map<String,Object> datamap = new HashMap<String,Object>();
+    		datamap.put("processid", item.getId());
+    		datamap.put("data", item.getProcessVariables());
+    		l.add(datamap);
+    		
+	    });
+	    
+	    return l;
+
+	}
+    
+    @Override
+    public List<Map<String, Object>> getallprocesslistbyname(String name, Date afterTime, Date beforeTime) {
+
+	    List<HistoricProcessInstance> processInstance= historyService.createHistoricProcessInstanceQuery()
+	    		.processDefinitionKey(name)
+	    		.includeProcessVariables()
+	    		.startedAfter(afterTime)
+	    		.startedBefore(beforeTime)
+	    		.orderByProcessInstanceStartTime()
+	    		.desc()
+	    		.list();
+	    
+	    List<Map<String, Object>> l = new ArrayList<Map<String, Object>>();
+    
+	    processInstance.forEach(item -> {
+	    	
+	    		Map<String,Object> datamap = new HashMap<String,Object>();
+	    		datamap.put("processid", item.getId());
+	    		datamap.put("data", item.getProcessVariables());
+	    		l.add(datamap);
+	    	    
+	    });
+	    
+	    return l;
+
+	}
+    
     
     //================================================================================
     //Task region
