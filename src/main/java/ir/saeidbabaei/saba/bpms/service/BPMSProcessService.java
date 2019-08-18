@@ -14,6 +14,7 @@ import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -176,19 +177,38 @@ public class BPMSProcessService implements IBPMSProcessService {
 	    		.orderByProcessInstanceStartTime()
 	    		.desc()
 	    		.list();
-	    
-	    List<Map<String, Object>> l = new ArrayList<Map<String, Object>>();
+	   	    
+	    List<Map<String, Object>> processlist = new ArrayList<Map<String, Object>>();
     
 	    processInstance.forEach(item -> {
 	    	
 	    		Map<String,Object> datamap = new HashMap<String,Object>();
 	    		datamap.put("processid", item.getId());
 	    		datamap.put("data", item.getProcessVariables());
-	    		l.add(datamap);
+	    		
+	    		//Get tasks info
+	    		List<HistoricTaskInstance> customTaskList = historyService.createHistoricTaskInstanceQuery()
+	    				.processInstanceId(item.getId())
+	    				.list();
+	    		    		
+	    		customTaskList.forEach(taskitem -> {
+	    				    		
+		    		Map<String,Object> taskinfomap = new HashMap<String,Object>();
+		    		
+		    		taskinfomap.put("Assignee", taskitem.getAssignee());
+		    		taskinfomap.put("CreateTime", taskitem.getCreateTime());
+		    		taskinfomap.put("ClaimTime", taskitem.getClaimTime());
+		    		taskinfomap.put("EndTime", taskitem.getEndTime());
+		    		
+		    		datamap.put(taskitem.getName().replaceAll("\\s","") , taskinfomap);		    		
+		    		
+	    		});    		
+	    		
+            	processlist.add(datamap);
 	    	    
 	    });
 	    
-	    return l;
+	    return processlist;
 
 	}
     

@@ -1,5 +1,6 @@
 package ir.saeidbabaei.saba.applicanthireprocess.repositories;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,5 +13,6 @@ public interface ApplicanthireinfoRepository extends JpaRepository<Applicanthire
 	@Query("SELECT a FROM Applicanthireinfo a WHERE a.applicant = :applicant")
 		Applicanthireinfo findApplicanthireinfoByApplicant(
 				@Param("applicant") Applicant applicant);
+	
 	
 }

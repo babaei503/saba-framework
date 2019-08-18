@@ -1,5 +1,6 @@
 package ir.saeidbabaei.saba.applicanthireprocess.controller;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -203,6 +204,31 @@ public class ApplicantHireProcessController {
 	}	
 	
 	
+    //================================================================================
+	//Applicant hire info Rest API Section
+    //================================================================================
+	
+	
+	
+	/**Get applicant hire info by id
+	 * 
+	 * @param   appid Applicant hire info id.
+	 * @return 		  Response 200 OK. Applicant hire info.
+	 */
+	@PreAuthorize("hasRole('ADMIN')")
+	@RequestMapping(value = "/get-apphireinfo-by-id/{applicantid}", method = RequestMethod.GET)
+	public ResponseEntity<Applicanthireinfo> getapphireinfobyid(@PathVariable long applicantid) {
+		
+		  Optional<Applicant> applicant = applicantservice.findById(applicantid);
+		   
+		  if (!applicant.isPresent())
+				throw new EntityNotFoundException("Applicant");
+		  else
+			    return ResponseEntity.ok(applicanthireinfoservice.findApplicanthireinfoByApplicant(applicant.get()));
+		  
+	}	
+	
+	
 	//================================================================================
 	//Call BPMS Rest API for hiring tasks
 	//================================================================================
@@ -306,6 +332,70 @@ public class ApplicantHireProcessController {
 		
     }
 	
+	/**Get list of unfinished process by name.
+	 *   
+	 * @param 	name				Process key
+	 * @param 	jsearchcondition	JSON string including fromdate and todate	
+	 * @return						List of process with process variables and count of process
+	 * @throws 	ParseException 		Date format is incorrect.
+	 */
+	@PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/gethireprocesslist", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Map<String, Object>> getprocesslistbyname(@RequestBody String jsearchcondition) throws ParseException {
+		
+		JSONObject searchcondition = new JSONObject(jsearchcondition);
+		
+		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("fromdate").toString());
+		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("todate").toString());	
+    	
+        return bpmsprocessservice.getprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
+	          
+    }
+	
+	
+	/**Get list of finished process by name.
+	 *   
+	 * @param 	name				Process key
+	 * @param 	jsearchcondition	JSON string including fromdate and todate	
+	 * @return						List of process with process variables and count of process
+	 * @throws 	ParseException		Date format is incorrect. 
+	 */
+	@PreAuthorize("hasRole('ADMIN')")	
+    @RequestMapping(value = "/gethishireprocesslist", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Map<String, Object>> gethisprocesslistbyname(@RequestBody String jsearchcondition) throws ParseException {
+		
+		JSONObject searchcondition = new JSONObject(jsearchcondition);
+		
+		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("fromdate").toString());
+		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("todate").toString());
+		   	
+        return bpmsprocessservice.gethisprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
+	          
+    }
+	
+	
+	/**Get list of finished and unfinished process by name.
+	 *   
+	 * @param 	name				Process key
+	 * @param 	jsearchcondition	JSON string including fromdate and todate			
+	 * @return						List of process with process variables and count of process
+	 * @throws 	ParseException		Date format is incorrect. 
+	 */
+	@PreAuthorize("hasRole('ADMIN')")	
+    @RequestMapping(value = "/getallhireprocesslist", method = RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Map<String, Object>> getallprocesslistbyname(@RequestBody String jsearchcondition) throws ParseException {
+								
+		JSONObject searchcondition = new JSONObject(jsearchcondition);
+		
+		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("fromdate").toString());
+		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("todate").toString());		
+    			
+        return bpmsprocessservice.getallprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
+	          
+    }
 	
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//Claim task 
@@ -444,77 +534,6 @@ public class ApplicantHireProcessController {
 	        		
 	}
 	
-	
-	/**Get list of unfinished process by name.
-	 *   
-	 * @param 	name			Process key
-	 * @param 	afterTime		Start date
-	 * @param 	beforeTime		End date
-	 * @return					List of process with process variables and count of process
-	 * @throws ParseException 	Date format is incorrect.
-	 */
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/gethireprocesslist")
-    public List<Map<String, Object>> getprocesslistbyname() throws ParseException {
-		
-		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2018");
-		
-		String pattern = "dd-MM-yyyy";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		String date = simpleDateFormat.format(new Date());
-		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(date);
-    	
-        return bpmsprocessservice.getprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
-	          
-    }
-	
-	
-	/**Get list of finished process by name.
-	 *   
-	 * @param 	name			Process key
-	 * @param 	afterTime		Start date
-	 * @param 	beforeTime		End date
-	 * @return					List of process with process variables and count of process
-	 * @throws ParseException	Date format is incorrect. 
-	 */
-	@PreAuthorize("hasRole('ADMIN')")	
-	@GetMapping("/gethishireprocesslist")
-    public List<Map<String, Object>> gethisprocesslistbyname() throws ParseException {
-		
-		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2018");
-		
-		String pattern = "dd-MM-yyyy";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		String date = simpleDateFormat.format(new Date());
-		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(date);		
-    	
-        return bpmsprocessservice.gethisprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
-	          
-    }
-	
-	
-	/**Get list of finished and unfinished process by name.
-	 *   
-	 * @param 	name			Process key
-	 * @param 	afterTime		Start date
-	 * @param 	beforeTime		End date
-	 * @return					List of process with process variables and count of process
-	 * @throws ParseException	Date format is incorrect. 
-	 */
-	@PreAuthorize("hasRole('ADMIN')")	
-	@GetMapping("/getallhireprocesslist")
-    public List<Map<String, Object>> getallprocesslistbyname() throws ParseException {
-		
-		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2018");
-		
-		String pattern = "dd-MM-yyyy";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		String date = simpleDateFormat.format(new Date());
-		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(date);		
-    	
-        return bpmsprocessservice.getallprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
-	          
-    }
 	
 
 	

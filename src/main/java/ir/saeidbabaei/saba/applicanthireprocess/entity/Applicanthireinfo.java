@@ -20,22 +20,22 @@ public class Applicanthireinfo  {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private String id;
+	private long id;
 	
 	//bi-directional many-to-one association to Applicant
 	@ManyToOne
 	@JoinColumn(name="applicantid")
 	private Applicant applicant;
 	
-	private boolean telintviwres;
+	private Boolean telintviwres;
 	
 	private String telintviwdesc;
 	
-	private boolean techintviwres;
+	private Boolean techintviwres;
 	
 	private String techintviwdesc;
 
-	private boolean finnegotres;
+	private Boolean finnegotres;
 
 	private String finnegotdesc;
 
@@ -60,8 +60,8 @@ public class Applicanthireinfo  {
 	 * @param finnegotres		Is finance negotiation OK
 	 * @param finnegotdesc		Description of finance negotiation
 	 */
-	public Applicanthireinfo(Applicant applicant, boolean telintviwres, String telintviwdesc,
-			boolean techintviwres, String techintviwdesc, boolean finnegotres,
+	public Applicanthireinfo(Applicant applicant, Boolean telintviwres, String telintviwdesc,
+			Boolean techintviwres, String techintviwdesc, Boolean finnegotres,
 			String finnegotdesc) {
 		super();
 		this.applicant = applicant;
@@ -79,14 +79,14 @@ public class Applicanthireinfo  {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -107,14 +107,14 @@ public class Applicanthireinfo  {
 	/**
 	 * @return the telintviwres
 	 */
-	public boolean getTelintviwres() {
+	public Boolean getTelintviwres() {
 		return telintviwres;
 	}
 
 	/**
 	 * @param telintviwres the telintviwres to set
 	 */
-	public void setTelintviwres(boolean telintviwres) {
+	public void setTelintviwres(Boolean telintviwres) {
 		this.telintviwres = telintviwres;
 	}
 
@@ -135,14 +135,14 @@ public class Applicanthireinfo  {
 	/**
 	 * @return the techintviwres
 	 */
-	public boolean getTechintviwres() {
+	public Boolean getTechintviwres() {
 		return techintviwres;
 	}
 
 	/**
 	 * @param techintviwres the techintviwres to set
 	 */
-	public void setTechintviwres(boolean techintviwres) {
+	public void setTechintviwres(Boolean techintviwres) {
 		this.techintviwres = techintviwres;
 	}
 
@@ -163,14 +163,14 @@ public class Applicanthireinfo  {
 	/**
 	 * @return the finnegotres
 	 */
-	public boolean getFinnegotres() {
+	public Boolean getFinnegotres() {
 		return finnegotres;
 	}
 
 	/**
 	 * @param finnegotres the finnegotres to set
 	 */
-	public void setFinnegotres(boolean finnegotres) {
+	public void setFinnegotres(Boolean finnegotres) {
 		this.finnegotres = finnegotres;
 	}
 
