@@ -38,7 +38,7 @@ public class ActivitiProperties {
 	 * 
 	 */
 
-	private String mailServerPassword = "********";
+	private String mailServerPassword = "*******";
 
 	
 	/**The default e-mail address of the sender of e-mails, when none is provided by the user.<br/>
