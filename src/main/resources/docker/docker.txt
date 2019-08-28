@@ -1,0 +1,34 @@
+docker pull image_name
+docker image ls
+docker image rm image_name
+
+docker network create my-network
+docker network connect my-network container1
+
+docker pull mysql
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+
+docker ps
+docker ps --all
+docker container ls -a
+docker run -p local_port:container_port -td existing_image_name
+docker start container_name
+docker stop container_name
+docker restart container_name
+docker commit container_name1 container_name2
+docker exec -it container_name bash
+docker logs container_name
+docker container rm container_name
+docker container ls -a --filter status=exited --filter status=created
+docker container prune
+docker rename source_name disc_name
+
+**Create Dockerfile at first**
+docker build -t saba-framework:latest .
+docker run -p 8080:8080 -td saba-framework:latest
+docker run -p 8080:8080 -itd --network=saba-network saba-framework:latest
+
+
+https://www.javainuse.com/devOps/docker/docker-mysql
+
+
