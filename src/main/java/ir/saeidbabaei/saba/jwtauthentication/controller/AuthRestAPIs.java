@@ -136,10 +136,10 @@ public class AuthRestAPIs {
 		userRepository.save(user);
 		
 		//Insert BPMS user and membership
-		bpmsprocessservice.addbpmsuser(user);
+		bpmsprocessservice.addBpmsUser(user);
         
 		strRoles.forEach(role -> {				
-			bpmsprocessservice.addbpmsusertogroup(role, user.getUsername());
+			bpmsprocessservice.addBpmsUserToGroup(role, user.getUsername());
 		});
 		
 

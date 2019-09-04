@@ -25,7 +25,7 @@ public interface IBPMSProcessService {
 	 * @param user	User
 	 * @return		User
 	 */
-	public User addbpmsuser(User user);
+	public User addBpmsUser(User user);
 	
 	
     /**Add BMPS groups.
@@ -35,7 +35,7 @@ public interface IBPMSProcessService {
      * @param grouptype Group type
      * @return			True or False
      */
-    public boolean addbpmsgroup(String groupid, String groupname, String grouptype);
+    public boolean addBpmsGroup(String groupid, String groupname, String grouptype);
     
     
     /**Add BMPS user to group.
@@ -44,7 +44,7 @@ public interface IBPMSProcessService {
      * @param username  User name
      * @return			True or False
      */
-    public boolean addbpmsusertogroup(String groupid, String username);
+    public boolean addBpmsUserToGroup(String groupid, String username);
 	
     
     //================================================================================
@@ -59,7 +59,7 @@ public interface IBPMSProcessService {
 	 * @param  name Process name
 	 * @return      Process instance id
 	 */
-	public String startprocessbyname(Map<String, Object> vars, String name);
+	public String startProcessByName(Map<String, Object> vars, String name);
 
 	
 	/**Get list of unfinished process by name.
@@ -69,7 +69,7 @@ public interface IBPMSProcessService {
 	 * @param 	beforeTime	End date
 	 * @return				List of process with process variables and count of process
 	 */
-	public List<Map<String, Object>> getprocesslistbyname(String name, Date afterTime, Date beforeTime);
+	public List<Map<String, Object>> getProcessListByName(String name, Date afterTime, Date beforeTime);
 	
 	
 	/**Get list of finished process by name.
@@ -79,7 +79,7 @@ public interface IBPMSProcessService {
 	 * @param 	beforeTime	End date
 	 * @return				List of process with process variables and count of process
 	 */
-	public List<Map<String, Object>> gethisprocesslistbyname(String name, Date afterTime, Date beforeTime);
+	public List<Map<String, Object>> getHisProcessListByName(String name, Date afterTime, Date beforeTime);
 	
 	
 	/**Get list of finished and unfinished process by name.
@@ -89,7 +89,7 @@ public interface IBPMSProcessService {
 	 * @param 	beforeTime	End date
 	 * @return				List of process with process variables and count of process
 	 */
-	public List<Map<String, Object>> getallprocesslistbyname(String name, Date afterTime, Date beforeTime);
+	public List<Map<String, Object>> getAllProcessListByName(String name, Date afterTime, Date beforeTime);
 	
 	
     //================================================================================
@@ -105,7 +105,7 @@ public interface IBPMSProcessService {
 	 * @param  name Candidate group name
 	 * @return      List of tasks
 	 */
-	public List<TaskRef> getactivetasksbygroup(String name);
+	public List<TaskRef> getActiveTasksByGroup(String name);
 	
 	
     /**Get task list of assignee by group<br/>
@@ -115,7 +115,7 @@ public interface IBPMSProcessService {
      * @param  groupname 	Group name
      * @return		   		List of tasks
      */
-    public List<TaskRef> getactivetasksbyassigneeandgroup(String assignee, String groupname);
+    public List<TaskRef> getActiveTasksByAssigneeAndGroup(String assignee, String groupname);
     
     
     /**Get a task by id and assignee.
@@ -124,7 +124,7 @@ public interface IBPMSProcessService {
      * @param assignee  User name of assignee
      * @return			Task
      */
-    public TaskRef gettaskbyidandassignee(String taskid, String assignee);
+    public TaskRef getTaskByIdAndAssignee(String taskid, String assignee);
     
     
     /**Get Process variables by task id and assignee.
@@ -133,7 +133,7 @@ public interface IBPMSProcessService {
      * @param assignee	Assignee
      * @return			Process variables
      */
-    public Map<String, Object> getprocessvarsbytaskidandassignee(String taskid, String assignee);
+    public Map<String, Object> getProcessVarsByTaskidAndAssignee(String taskid, String assignee);
     
     
 	/**Claim task by user.
@@ -142,7 +142,7 @@ public interface IBPMSProcessService {
 	 * @param  username User name
 	 * @return 			Task
 	 */
-	public TaskRef claimtaskbyuser(String taskid, String username);
+	public TaskRef claimTaskByUser(String taskid, String username);
 	
 	
 	/**Complete task by user.
@@ -151,7 +151,7 @@ public interface IBPMSProcessService {
 	 * @param  vars 	Variables that you should pass the task
 	 * @return 			True if task complete successful
 	 */
-    public boolean completetaskbyid(String taskid, Map<String, Object> vars);
+    public boolean completeTaskById(String taskid, Map<String, Object> vars);
     
 	
 }

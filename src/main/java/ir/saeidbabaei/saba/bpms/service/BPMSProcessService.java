@@ -60,7 +60,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	//================================================================================
 	
     @Override
-    public ir.saeidbabaei.saba.jwtauthentication.model.User addbpmsuser(ir.saeidbabaei.saba.jwtauthentication.model.User user){
+    public ir.saeidbabaei.saba.jwtauthentication.model.User addBpmsUser(ir.saeidbabaei.saba.jwtauthentication.model.User user){
 		  
 	    User actuser = identityService.newUser(user.getUsername());
 	    actuser.setPassword(user.getPassword());	    
@@ -71,7 +71,7 @@ public class BPMSProcessService implements IBPMSProcessService {
     }
     
     @Override
-    public boolean addbpmsgroup(String groupid, String groupname, String grouptype) {
+    public boolean addBpmsGroup(String groupid, String groupname, String grouptype) {
 		  
         Group group = identityService.newGroup(groupid);
         group.setName(groupname);
@@ -83,7 +83,7 @@ public class BPMSProcessService implements IBPMSProcessService {
     }
     
     @Override
-    public boolean addbpmsusertogroup(String groupid, String username){
+    public boolean addBpmsUserToGroup(String groupid, String username){
 		  
         if (identityService.createGroupQuery().groupId(groupid).singleResult() != null) {
         	identityService.createMembership(username, groupid);    
@@ -100,7 +100,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	//================================================================================
     
     @Override
-    public String startprocessbyname(Map<String, Object> vars, String name) {
+    public String startProcessByName(Map<String, Object> vars, String name) {
 
 		ProcessInstance processInstance= runtimeService.startProcessInstanceByKey(name, vars);
 		
@@ -110,7 +110,7 @@ public class BPMSProcessService implements IBPMSProcessService {
     
     
     @Override
-    public List<Map<String, Object>> getprocesslistbyname(String name, Date afterTime, Date beforeTime) {
+    public List<Map<String, Object>> getProcessListByName(String name, Date afterTime, Date beforeTime) {
 
 	    List<HistoricProcessInstance> processInstance= historyService.createHistoricProcessInstanceQuery()
 	    		.processDefinitionKey(name)
@@ -139,7 +139,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	}
     
     @Override
-    public List<Map<String, Object>> gethisprocesslistbyname(String name, Date afterTime, Date beforeTime) {
+    public List<Map<String, Object>> getHisProcessListByName(String name, Date afterTime, Date beforeTime) {
 
 	    List<HistoricProcessInstance> processInstance= historyService.createHistoricProcessInstanceQuery()
 	    		.processDefinitionKey(name)
@@ -167,7 +167,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	}
     
     @Override
-    public List<Map<String, Object>> getallprocesslistbyname(String name, Date afterTime, Date beforeTime) {
+    public List<Map<String, Object>> getAllProcessListByName(String name, Date afterTime, Date beforeTime) {
 
 	    List<HistoricProcessInstance> processInstance= historyService.createHistoricProcessInstanceQuery()
 	    		.processDefinitionKey(name)
@@ -218,7 +218,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	//================================================================================
     
     @Override
-	public List<TaskRef> getactivetasksbygroup(String name) {
+	public List<TaskRef> getActiveTasksByGroup(String name) {
              
         List<Task> tasks = taskService.createTaskQuery()
                 .taskCandidateGroup(name)
@@ -242,7 +242,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	}
     
     @Override
-    public List<TaskRef> getactivetasksbyassigneeandgroup(String assignee, String groupname) { 
+    public List<TaskRef> getActiveTasksByAssigneeAndGroup(String assignee, String groupname) { 
     	
     	//There is no way in activiti 6 that you can get tasks with assignee and group name
     	//When assignee claim a task, activiti delete the group of task
@@ -269,7 +269,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	}
     
     @Override
-    public TaskRef gettaskbyidandassignee(String taskid, String assignee) {
+    public TaskRef getTaskByIdAndAssignee(String taskid, String assignee) {
 	
 		Task taskitem = taskService.createTaskQuery()
 				.taskAssignee(assignee)
@@ -283,7 +283,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	}
     
     @Override
-    public Map<String, Object> getprocessvarsbytaskidandassignee(String taskid, String assignee) {
+    public Map<String, Object> getProcessVarsByTaskidAndAssignee(String taskid, String assignee) {
 	
     	Map<String, Object> processvars = taskService.createTaskQuery()
 				.taskAssignee(assignee)
@@ -296,7 +296,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	}
     
     @Override
-    public TaskRef claimtaskbyuser(String taskid, String username) {
+    public TaskRef claimTaskByUser(String taskid, String username) {
 
 		taskService.claim(taskid, username);
 		
@@ -312,9 +312,9 @@ public class BPMSProcessService implements IBPMSProcessService {
 	
 
     @Override
-    public boolean completetaskbyid(String taskid, Map<String, Object> vars) {
+    public boolean completeTaskById(String taskid, Map<String, Object> vars) {
     	
-    	initmailserver();
+    	initMailServer();
     	
 		taskService.complete(taskid,vars);
      
@@ -328,7 +328,7 @@ public class BPMSProcessService implements IBPMSProcessService {
 	//================================================================================
     
     
-    private void initmailserver()
+    private void initMailServer()
     {
     	springprocessengineconfiguration.setMailServerHost(activitiproperties.getMailServerHost());
     	springprocessengineconfiguration.setMailServerPort(activitiproperties.getMailServerPort());

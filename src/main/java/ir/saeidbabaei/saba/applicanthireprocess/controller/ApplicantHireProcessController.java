@@ -76,7 +76,7 @@ public class ApplicantHireProcessController {
 
         //Start hire process of applicant
         Map<String, Object> vars = Collections.<String, Object>singletonMap("applicant", applicant);
-        bpmsprocessservice.startprocessbyname(vars, "hireProcessWithJpa");
+        bpmsprocessservice.startProcessByName(vars, "hireProcessWithJpa");
 	          
         return ResponseEntity.ok(applicant);
     }
@@ -87,7 +87,7 @@ public class ApplicantHireProcessController {
      */
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/get-applicant-list", method = RequestMethod.GET)
-	public ResponseEntity<List<Applicant>> getapplicantlist() {
+	public ResponseEntity<List<Applicant>> getApplicantList() {
 	      
 		  return ResponseEntity.ok(applicantservice.findAll());
 	}
@@ -165,7 +165,7 @@ public class ApplicantHireProcessController {
 	 * @return 			Response 200 OK. List of jobs.
 	 */
 	@RequestMapping(value = "/get-job-list/{page}/{itemcount}", method = RequestMethod.GET)
-	public ResponseEntity<Page<Job>> getjoblist(@PathVariable int page, @PathVariable int itemcount) {
+	public ResponseEntity<Page<Job>> getJobList(@PathVariable int page, @PathVariable int itemcount) {
 	      
 		  return ResponseEntity.ok(jobservice.findAll(page,itemcount));
 	}
@@ -180,7 +180,7 @@ public class ApplicantHireProcessController {
 	 * @return           Response 200 OK. List of jobs.
 	 */
 	@RequestMapping(value = "/get-open-job-list-by-location-title/{location}/{title}/{page}/{itemcount}", method = RequestMethod.GET)
-	public ResponseEntity<Page<Job>> getopenjoblistbylocationAndTitle(@PathVariable String location,@PathVariable String title, @PathVariable int page, @PathVariable int itemcount) {
+	public ResponseEntity<Page<Job>> getOpenJobListByLocationAndTitle(@PathVariable String location,@PathVariable String title, @PathVariable int page, @PathVariable int itemcount) {
 	      
 		if (location.equals("all") && title.equals("all"))
 			 return ResponseEntity.ok(jobservice.findByOpen(true,page,itemcount));
@@ -198,7 +198,7 @@ public class ApplicantHireProcessController {
 	 * @return 		  Response 200 OK. Job info.
 	 */
 	@RequestMapping(value = "/get-job-by-id/{jobid}", method = RequestMethod.GET)
-	public ResponseEntity<Optional<Job>> getjobbyid(@PathVariable long jobid) {
+	public ResponseEntity<Optional<Job>> getJobById(@PathVariable long jobid) {
 	      
 		  return ResponseEntity.ok(jobservice.findById(jobid));
 	}	
@@ -217,7 +217,7 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/get-apphireinfo-by-id/{applicantid}", method = RequestMethod.GET)
-	public ResponseEntity<Applicanthireinfo> getapphireinfobyid(@PathVariable long applicantid) {
+	public ResponseEntity<Applicanthireinfo> getApphireinfoById(@PathVariable long applicantid) {
 		
 		  Optional<Applicant> applicant = applicantservice.findById(applicantid);
 		   
@@ -240,9 +240,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('TELEPHONE')")
 	@GetMapping("/get-active-phoneinterview-tasks")
-    public List<TaskRef> getactivephoneinterviewtasks() {
+    public List<TaskRef> getActivePhoneinterviewTasks() {
 				       
-		return bpmsprocessservice.getactivetasksbygroup("TELEPHONE");
+		return bpmsprocessservice.getActiveTasksByGroup("TELEPHONE");
 		
 	}
 	
@@ -252,9 +252,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('TELEPHONE')")
 	@GetMapping("/get-active-phoneinterviewtasks-assignee")
-    public List<TaskRef> getactivephninttasksbyassignee() {
+    public List<TaskRef> getActivePhnintTasksByAssignee() {
 				       
-		return bpmsprocessservice.getactivetasksbyassigneeandgroup(getusername(), "TELEPHONE");
+		return bpmsprocessservice.getActiveTasksByAssigneeAndGroup(getUserName(), "TELEPHONE");
 		
 	}	
 	
@@ -264,9 +264,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('TECH')")
 	@GetMapping("/get-active-techinterview-tasks")
-    public List<TaskRef> getactivetechinterviewtasks() {
+    public List<TaskRef> getActiveTechinterviewTasks() {
 				       
-		return bpmsprocessservice.getactivetasksbygroup("TECH");
+		return bpmsprocessservice.getActiveTasksByGroup("TECH");
 		
 	}
 	
@@ -276,9 +276,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('TECH')")
 	@GetMapping("/get-active-techinterviewtasks-assignee")
-    public List<TaskRef> getactivetechinttasksbyassignee() {
+    public List<TaskRef> getActiveTechintTasksByAssignee() {
 				       
-		return bpmsprocessservice.getactivetasksbyassigneeandgroup(getusername(), "TECH");
+		return bpmsprocessservice.getActiveTasksByAssigneeAndGroup(getUserName(), "TECH");
 		
 	}	
 	
@@ -288,9 +288,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('FINANCE')")
 	@GetMapping("/get-active-financenegotiation-tasks")
-    public List<TaskRef> getactivefinancnegottasks() {
+    public List<TaskRef> getActiveFinancnegotTasks() {
 				       
-		return bpmsprocessservice.getactivetasksbygroup("FINANCE");
+		return bpmsprocessservice.getActiveTasksByGroup("FINANCE");
 		
 	}
 	
@@ -300,9 +300,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('FINANCE')")
 	@GetMapping("/get-active-financenegottasks-assignee")
-    public List<TaskRef> getactivefinancnegottasksbyassignee() {
+    public List<TaskRef> getActiveFinancnegotTasksByAssignee() {
 				       
-		return bpmsprocessservice.getactivetasksbyassigneeandgroup(getusername(), "FINANCE");
+		return bpmsprocessservice.getActiveTasksByAssigneeAndGroup(getUserName(), "FINANCE");
 		
 	}
 	
@@ -313,9 +313,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('TELEPHONE') or hasRole('TECH') or hasRole('FINANCE')")
 	@GetMapping("/get-task-by-id-assignee/{taskid}")
-    public TaskRef gettaskbyidandassignee(@PathVariable String taskid) {
+    public TaskRef getTaskByIdAndAssignee(@PathVariable String taskid) {
 				       
-		return bpmsprocessservice.gettaskbyidandassignee(taskid, getusername());
+		return bpmsprocessservice.getTaskByIdAndAssignee(taskid, getUserName());
 		
 	}	
 	
@@ -326,9 +326,9 @@ public class ApplicantHireProcessController {
      */
 	@PreAuthorize("hasRole('TELEPHONE') or hasRole('TECH') or hasRole('FINANCE')")
 	@GetMapping("/get-hireprocvars-by-taskid-assignee/{taskid}")
-    public Map<String, Object> getprocessvarsbytaskidandassignee(@PathVariable String taskid){
+    public Map<String, Object> getProcessVarsByTaskidAndAssignee(@PathVariable String taskid){
     	
-		return bpmsprocessservice.getprocessvarsbytaskidandassignee(taskid, getusername());
+		return bpmsprocessservice.getProcessVarsByTaskidAndAssignee(taskid, getUserName());
 		
     }
 	
@@ -342,14 +342,14 @@ public class ApplicantHireProcessController {
 	@PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/gethireprocesslist", method = RequestMethod.POST,
     produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Map<String, Object>> getprocesslistbyname(@RequestBody String jsearchcondition) throws ParseException {
+    public List<Map<String, Object>> getProcessListbyName(@RequestBody String jsearchcondition) throws ParseException {
 		
 		JSONObject searchcondition = new JSONObject(jsearchcondition);
 		
 		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("fromdate").toString());
 		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("todate").toString());	
     	
-        return bpmsprocessservice.getprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
+        return bpmsprocessservice.getProcessListByName("hireProcessWithJpa", afterTime, beforeTime);
 	          
     }
 	
@@ -364,14 +364,14 @@ public class ApplicantHireProcessController {
 	@PreAuthorize("hasRole('ADMIN')")	
     @RequestMapping(value = "/gethishireprocesslist", method = RequestMethod.POST,
     produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Map<String, Object>> gethisprocesslistbyname(@RequestBody String jsearchcondition) throws ParseException {
+    public List<Map<String, Object>> getHisProcessListByName(@RequestBody String jsearchcondition) throws ParseException {
 		
 		JSONObject searchcondition = new JSONObject(jsearchcondition);
 		
 		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("fromdate").toString());
 		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("todate").toString());
 		   	
-        return bpmsprocessservice.gethisprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
+        return bpmsprocessservice.getHisProcessListByName("hireProcessWithJpa", afterTime, beforeTime);
 	          
     }
 	
@@ -386,14 +386,14 @@ public class ApplicantHireProcessController {
 	@PreAuthorize("hasRole('ADMIN')")	
     @RequestMapping(value = "/getallhireprocesslist", method = RequestMethod.POST,
     produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Map<String, Object>> getallprocesslistbyname(@RequestBody String jsearchcondition) throws ParseException {
+    public List<Map<String, Object>> getAllProcessListByName(@RequestBody String jsearchcondition) throws ParseException {
 								
 		JSONObject searchcondition = new JSONObject(jsearchcondition);
 		
 		Date afterTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("fromdate").toString());
 		Date beforeTime = new SimpleDateFormat("dd-MM-yyyy").parse(searchcondition.get("todate").toString());		
     			
-        return bpmsprocessservice.getallprocesslistbyname("hireProcessWithJpa", afterTime, beforeTime);
+        return bpmsprocessservice.getAllProcessListByName("hireProcessWithJpa", afterTime, beforeTime);
 	          
     }
 	
@@ -409,9 +409,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('TELEPHONE')")
 	@GetMapping("/claim-phoneinterview-task/{taskid}")
-    public TaskRef claimphoneinterviewtask(@PathVariable String taskid) {
+    public TaskRef claimPhoneinterviewTask(@PathVariable String taskid) {
 				       
-		return  bpmsprocessservice.claimtaskbyuser(taskid, getusername());     
+		return  bpmsprocessservice.claimTaskByUser(taskid, getUserName());
 		
 	}
 	
@@ -422,9 +422,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('TECH')")
 	@GetMapping("/claim-techinterview-task/{taskid}")
-    public TaskRef claimtechinterviewtask(@PathVariable String taskid) {
+    public TaskRef claimTechinterviewTask(@PathVariable String taskid) {
 				       
-		return  bpmsprocessservice.claimtaskbyuser(taskid, getusername());     
+		return  bpmsprocessservice.claimTaskByUser(taskid, getUserName());     
 		
 	}
 	
@@ -435,9 +435,9 @@ public class ApplicantHireProcessController {
 	 */
 	@PreAuthorize("hasRole('FINANCE')")
 	@GetMapping("/claim-financenegotiation-task/{taskid}")
-    public TaskRef claimfinancenegotiationtask(@PathVariable String taskid) {
+    public TaskRef claimFinancenegotiationTask(@PathVariable String taskid) {
 				       
-		return  bpmsprocessservice.claimtaskbyuser(taskid, getusername());     
+		return  bpmsprocessservice.claimTaskByUser(taskid, getUserName());     
 		
 	}
 	
@@ -458,7 +458,7 @@ public class ApplicantHireProcessController {
     @ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/complete-phoneinterview-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public boolean completephoneinterviewtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+    public boolean compleTephoneinterviewTaskByTaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
 		
     	//Save applicant hire info
         applicanthireinfoservice.save(applicanthireinfo);
@@ -466,7 +466,7 @@ public class ApplicantHireProcessController {
         Map<String, Object> taskVariables = new HashMap<String, Object>();
         taskVariables.put("telephoneInterviewOutcome", applicanthireinfo.getTelintviwres());
         
-        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);        
+        return bpmsprocessservice.completeTaskById(taskid, taskVariables);        
 		
 	}	
 	
@@ -481,7 +481,7 @@ public class ApplicantHireProcessController {
     @ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/complete-techinterview-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public boolean completetechinterviewtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+    public boolean completeTechinterviewTaskByTaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
 		
 		//Find applicant hire info
 		Applicanthireinfo aphinfo = applicanthireinfoservice.findApplicanthireinfoByApplicant(applicanthireinfo.getApplicant());
@@ -498,7 +498,7 @@ public class ApplicantHireProcessController {
         taskVariables.put("techOk", applicanthireinfo.getTechintviwres());
         
         //Complete task
-        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);
+        return bpmsprocessservice.completeTaskById(taskid, taskVariables);
 	       		
 	}	
 
@@ -513,7 +513,7 @@ public class ApplicantHireProcessController {
     @ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/complete-financenegotiation-task/{taskid}", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public boolean completefinancialnegotiationtaskbytaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
+    public boolean completeFinancialnegotiationTaskByTaskid(@RequestBody Applicanthireinfo applicanthireinfo, @PathVariable String taskid) {
 		
 		//Find applicant hire info
 		Applicanthireinfo aphinfo = applicanthireinfoservice.findApplicanthireinfoByApplicant(applicanthireinfo.getApplicant());
@@ -530,7 +530,7 @@ public class ApplicantHireProcessController {
         taskVariables.put("financialOk", applicanthireinfo.getFinnegotres());
         
         //Complete task
-        return bpmsprocessservice.completetaskbyid(taskid, taskVariables);
+        return bpmsprocessservice.completeTaskById(taskid, taskVariables);
 	        		
 	}
 	
@@ -546,7 +546,7 @@ public class ApplicantHireProcessController {
 	 * 
 	 * @return Signed in user name
 	 */
-	private String getusername()
+	private String getUserName()
 	{
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
